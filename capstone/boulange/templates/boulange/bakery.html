@@ -17,4 +17,10 @@
     <p>{{ bakery.city }}</p>
     <p>{{ bakery.description }}</p>
     <p>Likes: {{ bakery.number_of_likes }}</p>
+    <h2>Items</h2>
+    <ul>
+        {% for pastry in bakery.pastries.all %}
+        <li>{{ pastry }}</li>
+        {% endfor %}
+    </ul>
 {% endblock %}

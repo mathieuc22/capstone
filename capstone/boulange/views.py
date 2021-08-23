@@ -76,6 +76,7 @@ def index(request):
 
     # When user add a bakery handle the new
     if request.method == "POST":
+        # Check wether it's a fetch or a form request
         if request.headers.get("Content-Type") == 'application/json':
             body = json.loads(request.body)
             bakery = Bakery(

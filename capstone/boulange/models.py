@@ -20,3 +20,12 @@ class Bakery(models.Model):
 
     def __str__(self):
         return self.name
+
+class Pastry(models.Model):
+    bakery = models.ForeignKey(Bakery, on_delete=models.CASCADE, related_name="pastries")
+    item = models.CharField(max_length=50)
+    description = models.TextField(blank=True)
+    price= models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f'{self.item} : {self.price} €'
