@@ -1,0 +1,20 @@
+{% extends "boulange/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <h1>{{ bakery.name }}</h1>
+    {% if request.user == bakery.creator %}
+        <form action="{% url 'bakery_edit' bakery_id=bakery.id %}" method="get">
+            {% csrf_token %}
+            <input type="submit" value="Edit">
+        </form>
+
+        <form action="{% url 'bakery_delete' bakery_id=bakery.id %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Delete">
+        </form>
+    {% endif %}
+    <p>{{ bakery.city }}</p>
+    <p>{{ bakery.description }}</p>
+    <p>Likes: {{ bakery.number_of_likes }}</p>
+{% endblock %}

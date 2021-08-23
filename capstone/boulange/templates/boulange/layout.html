@@ -8,12 +8,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     <title>{% block title %}Boulange{% endblock %}</title>
-    <link type="text/css" href="{% static 'boulange/styles.css' %}" rel="stylesheet" />
+    <link type="text/css" href="{% static 'boulange/style.css' %}" rel="stylesheet" />
   </head>
   <body>
+    <h1><a href="{% url 'index' %}">Boulange</a></h1>
     <ul class="navbar-nav mr-auto">
       {% if user.is_authenticated %}
-      <li>{{ user.username }}</li>
+      <li>User {{ user.username }}</li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'bakery_new' %}">Add a bakery</a>
+      </li>
       <li class="nav-item">
         <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
       </li>

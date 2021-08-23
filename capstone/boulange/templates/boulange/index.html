@@ -2,5 +2,9 @@
 {% load static %}
 
 {% block body %}
-  Message : {{ message }}
+  <ul>
+    {% for bakery in bakeries %}
+    <li><a href="{% url 'bakery' bakery_id=bakery.id %}">{{ bakery }}</a></li>
+    {% endfor %}
+  </ul>
 {% endblock %}

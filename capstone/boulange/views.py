@@ -1,10 +1,19 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, response
+from django import forms
+from django.shortcuts import get_object_or_404, render
+from django.views.decorators.http import require_http_methods
+from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.db import IntegrityError
+from django.core.exceptions import PermissionDenied
+from django.views.decorators.csrf import csrf_exempt
+
+from .models import Bakery
+from .forms import BakeryForm
+
+import json
 
 def login_view(request):
     if request.method == "POST":
@@ -17,7 +26,11 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse("index"))
+            next_url = request.POST["next"]
+            if next_url:
+                return HttpResponseRedirect(next_url)
+            else:
+                return HttpResponseRedirect(reverse("index"))
         else:
             return render(request, "boulange/login.html", {
                 "message": "Invalid username and/or password."
@@ -57,6 +70,70 @@ def register(request):
     else:
         return render(request, "boulange/register.html")
 
+@login_required
+@csrf_exempt
 def index(request):
-    context = {'message': 'Hello World!'}
+
+    # When user add a bakery handle the new
+    if request.method == "POST":
+        if request.headers.get("Content-Type") == 'application/json':
+            body = json.loads(request.body)
+            bakery = Bakery(
+                name = body.get("name"),
+                description = body.get("description"),
+                city = body.get("city"),
+                creator = get_object_or_404(User, username=body.get("creator"))
+            )
+            bakery.save()
+        else:
+            form = BakeryForm(request.POST)
+            if form.is_valid():
+                # Create the bakery
+                bakery = form.save(commit=False)
+                bakery.creator = request.user
+                bakery.save()
+
+    # Query all the bakeries
+    bakeries = Bakery.objects.all()
+    context = {'bakeries': bakeries}
     return render(request, "boulange/index.html", context)
+
+def bakery(request, bakery_id):
+
+    # When user add a bakery handle the new
+    if request.method == "POST":
+        bakery = get_object_or_404(Bakery, pk=bakery_id)
+        form = BakeryForm(request.POST or None, instance=bakery)
+        if form.is_valid():
+            # Update the bakery
+            form.save()
+
+    # Query for the bakery
+    bakery = get_object_or_404(Bakery, pk=bakery_id)
+    context = {'bakery': bakery}
+    return render(request, "boulange/bakery.html", context)
+
+@login_required
+def bakery_new(request):
+    form = BakeryForm()
+    return render(request, "boulange/bakery_new.html", {'form': form})
+
+@login_required
+def bakery_edit(request, bakery_id):
+    # Query for the bakery
+    bakery = get_object_or_404(Bakery, pk=bakery_id)
+    if bakery.creator != request.user:
+        raise PermissionDenied
+    form = BakeryForm(request.POST or None, instance=bakery)
+    return render(request, "boulange/bakery_edit.html", {'form': form, 'bakery_id': bakery.id})
+
+@login_required
+@require_http_methods(["POST"])
+def bakery_delete(request, bakery_id):
+    # Query for the bakery
+    bakery = get_object_or_404(Bakery, pk=bakery_id)
+    if bakery.creator != request.user:
+        raise PermissionDenied
+    else:
+        bakery.delete()
+        return HttpResponseRedirect(reverse("index"))
