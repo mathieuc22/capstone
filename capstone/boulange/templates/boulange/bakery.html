@@ -18,9 +18,23 @@
     <p>{{ bakery.description }}</p>
     <p>Likes: {{ bakery.number_of_likes }}</p>
     <h2>Items</h2>
-    <ul>
+    {% if request.user == bakery.creator %}
+    <form method="PUT" id="pastry-form">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Submit">
+    </form>
+    {% endif %}
+    <ul id=pastry-list>
         {% for pastry in bakery.pastries.all %}
-        <li>{{ pastry }}</li>
+        <li>{{ pastry }}
+            {% if request.user == bakery.creator %}
+            <form class="delete-pastry" id="delete-{{ pastry.pastry_id }}" action="{% url 'pastry_delete' pastry_id=pastry.pastry_id %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="Delete">
+            </form>
+            {% endif %}
+        </li>
         {% endfor %}
     </ul>
 {% endblock %}

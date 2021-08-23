@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.utils import tree
 from django.contrib.auth.models import User
@@ -22,6 +23,7 @@ class Bakery(models.Model):
         return self.name
 
 class Pastry(models.Model):
+    pastry_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     bakery = models.ForeignKey(Bakery, on_delete=models.CASCADE, related_name="pastries")
     item = models.CharField(max_length=50)
     description = models.TextField(blank=True)

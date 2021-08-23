@@ -1,7 +1,7 @@
 from django import forms
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -10,8 +10,8 @@ from django.db import IntegrityError
 from django.core.exceptions import PermissionDenied
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import Bakery
-from .forms import BakeryForm
+from .models import Bakery, Pastry
+from .forms import BakeryForm, PastryForm
 
 import json
 
@@ -70,7 +70,6 @@ def register(request):
     else:
         return render(request, "boulange/register.html")
 
-@login_required
 @csrf_exempt
 def index(request):
 
@@ -99,19 +98,32 @@ def index(request):
     context = {'bakeries': bakeries}
     return render(request, "boulange/index.html", context)
 
+@csrf_exempt
 def bakery(request, bakery_id):
-
+    if request.method == "PUT":
+        # Get contents
+        data = json.loads(request.body)
+        # Query for the bakery
+        bakery = get_object_or_404(Bakery, pk=bakery_id)
+        if bakery.creator != request.user:
+            return JsonResponse({"message": "Permission denied."})
+        else:
+            item = data.get("item")
+            price = data.get("price")
+            newItem = bakery.pastries.create(item=item, price=price)
+            bakery.save()
+            return JsonResponse({"message": f'{newItem}'})
     # When user add a bakery handle the new
-    if request.method == "POST":
+    elif request.method == "POST":
         bakery = get_object_or_404(Bakery, pk=bakery_id)
         form = BakeryForm(request.POST or None, instance=bakery)
         if form.is_valid():
             # Update the bakery
             form.save()
-
     # Query for the bakery
     bakery = get_object_or_404(Bakery, pk=bakery_id)
-    context = {'bakery': bakery}
+    form = PastryForm()
+    context = {'bakery': bakery, 'form': form}
     return render(request, "boulange/bakery.html", context)
 
 @login_required
@@ -138,3 +150,12 @@ def bakery_delete(request, bakery_id):
     else:
         bakery.delete()
         return HttpResponseRedirect(reverse("index"))
+
+@login_required
+@csrf_exempt
+@require_http_methods(["POST"])
+def pastry_delete(request, pastry_id):
+    # Query for the bakery
+    pastry = get_object_or_404(Pastry, pk=pastry_id)
+    pastry.delete()
+    return JsonResponse({"message": "Item deleted"})
