@@ -7,10 +7,18 @@ document.addEventListener('DOMContentLoaded', function() {
   // Sélection des fonctions à exécuter en fonction de la page courante
   if (page.includes("bakeries")) {
     // Prevent submit on form and call the add API
-    document.querySelector('#pastry-form').addEventListener('submit', add_pastry);
-    // Prevent submit on form and call the delete API
-    document.querySelectorAll('.delete-pastry').forEach(form => { form.addEventListener('click', (event) => delete_pastry(event)) });
-    document.querySelector('#id_price').addEventListener('change', (event) => { event.target.value = Number(event.target.value).toFixed(2) })
+    const pastryForm = document.querySelector('#pastry-form')
+    if (pastryForm) {
+      pastryForm.addEventListener('submit', add_pastry);
+      document.querySelector('#id_price').addEventListener('change', (event) => { event.target.value = Number(event.target.value).toFixed(2) })
+      // Call the delete API
+      document.querySelectorAll('.delete-pastry').forEach(form => { form.addEventListener('click', (event) => delete_pastry(event)) });
+    }
+    // Call the add to cart API
+    const addToCartButton = document.querySelectorAll('.addToCart-pastry')
+    if (addToCartButton) {
+      addToCartButton.forEach(form => { form.addEventListener('click', (event) => addToCart_pastry(event)) });
+    }
   }
 });
 
@@ -70,5 +78,29 @@ function delete_pastry(event) {
       deleteItem.parentElement.remove();
   });
 
+}
+
+function addToCart_pastry(event) {
+  
+  // prevent the refresh due to form submission
+  event.preventDefault();
+  const id = event.target.id.split('addToCart-')[1]
+  console.log(id)
+
+  fetch('/cart', {
+    method: 'POST',
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      pastry: id
+    })
+  })
+  .then(response => response.json())
+  .then(result => {
+      // Print result
+      console.log(result);
+  });
 
 }

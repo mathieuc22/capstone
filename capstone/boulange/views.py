@@ -160,12 +160,34 @@ def pastry_delete(request, pastry_id):
     pastry.delete()
     return JsonResponse({"message": "Item deleted"})
 
+@csrf_exempt
 @login_required
-def cart(request, user_id):
-    # Query all the lines
-    cart_items = Cart.objects.filter(user=user_id)
-    if cart_items:
-        context = {'cart_items': cart_items}
+def cart(request):
+    if request.method == "POST":
+        # Get contents
+        data = json.loads(request.body)
+        pastryId = data.get("pastry")
+        # Check if cart line already exist, if yes update quantity
+        cart_item = Cart.objects.filter(user=request.user, pastry_id=pastryId).first()
+        if cart_item:
+            cart_item.quantity = cart_item.quantity + 1
+            cart_item.save()
+            return JsonResponse({"message": f'Quantity updated for {cart_item.pastry}'})
+        else:
+            pastry = Pastry.objects.get(pk=pastryId)
+            user = User.objects.get(username=request.user)
+            newItem = Cart(
+                user=user, 
+                pastry=pastry, 
+                quantity=1
+            )
+            newItem.save()
+            return JsonResponse({"message": f'Added {newItem} to cart'})
     else:
-        context = {'message': 'Pas de produit dans le panier'}
-    return render(request, "boulange/cart.html", context)
+        # Query all the lines
+        cart_items = Cart.objects.filter(user=request.user)
+        if cart_items:
+            context = {'cart_items': cart_items}
+        else:
+            context = {'message': 'Pas de produit dans le panier'}
+        return render(request, "boulange/cart.html", context)

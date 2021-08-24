@@ -31,6 +31,7 @@
             {% if request.user == bakery.creator %}
             <button type="button" class="delete-pastry" id="delete-{{ pastry.pastry_id }}">Delete</button>
             {% endif %}
+            <button type="button" class="addToCart-pastry" id="addToCart-{{ pastry.pastry_id }}">Add to cart</button>
         </li>
         {% endfor %}
     </ul>
