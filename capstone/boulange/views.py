@@ -10,7 +10,7 @@ from django.db import IntegrityError
 from django.core.exceptions import PermissionDenied
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import Bakery, Pastry
+from .models import Bakery, Pastry, Cart
 from .forms import BakeryForm, PastryForm
 
 import json
@@ -159,3 +159,13 @@ def pastry_delete(request, pastry_id):
     pastry = get_object_or_404(Pastry, pk=pastry_id)
     pastry.delete()
     return JsonResponse({"message": "Item deleted"})
+
+@login_required
+def cart(request, user_id):
+    # Query all the lines
+    cart_items = Cart.objects.filter(user=user_id)
+    if cart_items:
+        context = {'cart_items': cart_items}
+    else:
+        context = {'message': 'Pas de produit dans le panier'}
+    return render(request, "boulange/cart.html", context)

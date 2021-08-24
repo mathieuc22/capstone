@@ -31,3 +31,12 @@ class Pastry(models.Model):
 
     def __str__(self):
         return f'{self.item} : {self.price} €'
+
+class Cart(models.Model):
+    line_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="cart_items")
+    pastry = models.ForeignKey(Pastry, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+
+    def __str__(self):
+        return f'{self.quantity} {self.pastry}'

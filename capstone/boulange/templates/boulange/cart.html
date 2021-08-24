@@ -1,0 +1,15 @@
+{% extends "boulange/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <h2>My cart</h2>
+    {% if message %}
+    {{message}}
+    {% else %}
+  <ul>
+    {% for cart_item in cart_items %}
+    <li>{{ cart_item.pastry.bakery.name }} - {{ cart_item.pastry.item }} - {{ cart_item.quantity }} - {% widthratio cart_item.quantity 1 cart_item.pastry.price %} €</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+{% endblock %}
