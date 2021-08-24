@@ -29,10 +29,7 @@
         {% for pastry in bakery.pastries.all %}
         <li>{{ pastry }}
             {% if request.user == bakery.creator %}
-            <form class="delete-pastry" id="delete-{{ pastry.pastry_id }}" action="{% url 'pastry_delete' pastry_id=pastry.pastry_id %}" method="post">
-                {% csrf_token %}
-                <input type="submit" value="Delete">
-            </form>
+            <button type="button" class="delete-pastry" id="delete-{{ pastry.pastry_id }}">Delete</button>
             {% endif %}
         </li>
         {% endfor %}

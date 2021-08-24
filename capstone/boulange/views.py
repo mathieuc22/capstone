@@ -112,7 +112,7 @@ def bakery(request, bakery_id):
             price = data.get("price")
             newItem = bakery.pastries.create(item=item, price=price)
             bakery.save()
-            return JsonResponse({"message": f'{newItem}'})
+            return JsonResponse({"message": f'{newItem} ', "id": f'{newItem.pastry_id}'})
     # When user add a bakery handle the new
     elif request.method == "POST":
         bakery = get_object_or_404(Bakery, pk=bakery_id)

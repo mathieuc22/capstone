@@ -9,7 +9,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Prevent submit on form and call the add API
     document.querySelector('#pastry-form').addEventListener('submit', add_pastry);
     // Prevent submit on form and call the delete API
-    document.querySelectorAll('.delete-pastry').forEach(form => { form.addEventListener('submit', (event) => delete_pastry(event)) });
+    document.querySelectorAll('.delete-pastry').forEach(form => { form.addEventListener('click', (event) => delete_pastry(event)) });
+    document.querySelector('#id_price').addEventListener('change', (event) => { event.target.value = Number(event.target.value).toFixed(2) })
   }
 });
 
@@ -36,8 +37,15 @@ function add_pastry(event) {
       // Print result
       console.log(result);
       const listItem = document.createElement("li");
+      const deleteItem = document.createElement("button");
+      deleteItem.setAttribute("id",`delete-${result.id}`);
+      deleteItem.setAttribute("class","delete-pastry");
+      deleteItem.setAttribute("type","button");
+      deleteItem.innerHTML = "Delete";
       listItem.innerHTML = result.message;
       document.querySelector("#pastry-list").appendChild(listItem);
+      listItem.appendChild(deleteItem);
+      deleteItem.addEventListener('click', (event) => delete_pastry(event));
   });
 }
 
@@ -46,8 +54,7 @@ function delete_pastry(event) {
   // prevent the refresh due to form submission
   event.preventDefault();
   const id = event.target.id.split('delete-')[1]
-  console.log(id);
-  const deleteItem = document.querySelector(`#delete-${id}`)
+  const deleteItem = document.querySelector(`#${event.target.id}`)
 
   fetch(`/pastries/delete/${id}`, {
     method: 'POST',
@@ -57,9 +64,9 @@ function delete_pastry(event) {
     }
   })
   .then(response => response.json())
-  .then(post => {
+  .then(result => {
       // Print result
-      console.log(post);
+      console.log(result);
       deleteItem.parentElement.remove();
   });
 
