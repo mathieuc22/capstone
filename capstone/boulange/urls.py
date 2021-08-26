@@ -11,6 +11,7 @@ urlpatterns = [
     path("bakeries/edit/<int:bakery_id>", views.bakery_edit, name="bakery_edit"),
 
     path("cart", views.cart, name="cart"),
+    path("cart/delete/<uuid:line_id>", views.line_delete, name="line_delete"),
 
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),

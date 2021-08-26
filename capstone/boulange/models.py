@@ -38,5 +38,8 @@ class Cart(models.Model):
     pastry = models.ForeignKey(Pastry, on_delete=models.CASCADE)
     quantity = models.IntegerField()
 
+    def getPrice(self):
+        return self.pastry.price * self.quantity
+
     def __str__(self):
         return f'{self.quantity} {self.pastry}'

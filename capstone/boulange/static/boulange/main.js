@@ -20,6 +20,12 @@ document.addEventListener('DOMContentLoaded', function() {
       addToCartButton.forEach(form => { form.addEventListener('click', (event) => addToCart_pastry(event)) });
     }
   }
+  // Call the add to cart API
+  const changeQuantity = document.querySelectorAll('.pastryQuantity')
+  if (changeQuantity) {
+    changeQuantity.forEach(select => { select.addEventListener('change', (event) => updateQuantity(event)) });
+    document.querySelectorAll('.delete-item').forEach(form => { form.addEventListener('click', (event) => delete_item(event)) });
+  }
 });
 
 
@@ -53,6 +59,16 @@ function add_pastry(event) {
       listItem.innerHTML = result.message;
       document.querySelector("#pastry-list").appendChild(listItem);
       listItem.appendChild(deleteItem);
+
+      const addToCartItem = document.createElement("button");
+      addToCartItem.setAttribute("id",`addToCart-${result.id}`);
+      addToCartItem.setAttribute("class","addToCart-pastry");
+      addToCartItem.setAttribute("type","button");
+      addToCartItem.innerHTML = "Add to cart";
+      listItem.appendChild(addToCartItem);
+
+      addToCartItem.addEventListener('click', (event) => addToCart_pastry(event));
+
       deleteItem.addEventListener('click', (event) => delete_pastry(event));
   });
 }
@@ -101,6 +117,58 @@ function addToCart_pastry(event) {
   .then(result => {
       // Print result
       console.log(result);
+  });
+
+}
+
+function updateQuantity(event) {
+  
+  // prevent the refresh due to form submission
+  event.preventDefault();
+  const id = event.target.id.split('pastryQuantity-')[1];
+  const value = Number(event.target.value);
+
+  fetch('/cart', {
+    method: 'POST',
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      pastry: id,
+      quantity: value
+    })
+  })
+  .then(response => response.json())
+  .then(result => {
+      // Print result
+      console.log(result);
+  });
+
+  const price = Number(document.querySelector(`#pastryPrice-${id}`).innerHTML.replace(" €",""));
+  document.querySelector(`#linePrice-${id}`).innerHTML = `${ (value * price).toFixed(2) } €`;
+
+}
+
+function delete_item(event) {
+  
+  // prevent the refresh due to form submission
+  event.preventDefault();
+  const id = event.target.id.split('delete-')[1]
+  const deleteItem = document.querySelector(`#${event.target.id}`)
+
+  fetch(`/cart/delete/${id}`, {
+    method: 'POST',
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    }
+  })
+  .then(response => response.json())
+  .then(result => {
+      // Print result
+      console.log(result);
+      deleteItem.parentElement.remove();
   });
 
 }

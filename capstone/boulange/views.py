@@ -100,11 +100,12 @@ def index(request):
 
 @csrf_exempt
 def bakery(request, bakery_id):
+    bakery = get_object_or_404(Bakery, pk=bakery_id)
+    # Add item to the bakery
     if request.method == "PUT":
         # Get contents
         data = json.loads(request.body)
         # Query for the bakery
-        bakery = get_object_or_404(Bakery, pk=bakery_id)
         if bakery.creator != request.user:
             return JsonResponse({"message": "Permission denied."})
         else:
@@ -113,15 +114,13 @@ def bakery(request, bakery_id):
             newItem = bakery.pastries.create(item=item, price=price)
             bakery.save()
             return JsonResponse({"message": f'{newItem} ', "id": f'{newItem.pastry_id}'})
-    # When user add a bakery handle the new
+    # Edit the bakery
     elif request.method == "POST":
-        bakery = get_object_or_404(Bakery, pk=bakery_id)
         form = BakeryForm(request.POST or None, instance=bakery)
         if form.is_valid():
             # Update the bakery
             form.save()
     # Query for the bakery
-    bakery = get_object_or_404(Bakery, pk=bakery_id)
     form = PastryForm()
     context = {'bakery': bakery, 'form': form}
     return render(request, "boulange/bakery.html", context)
@@ -160,8 +159,8 @@ def pastry_delete(request, pastry_id):
     pastry.delete()
     return JsonResponse({"message": "Item deleted"})
 
-@csrf_exempt
 @login_required
+@csrf_exempt
 def cart(request):
     if request.method == "POST":
         # Get contents
@@ -170,7 +169,11 @@ def cart(request):
         # Check if cart line already exist, if yes update quantity
         cart_item = Cart.objects.filter(user=request.user, pastry_id=pastryId).first()
         if cart_item:
-            cart_item.quantity = cart_item.quantity + 1
+            quantity = data.get("quantity")
+            if quantity:
+                cart_item.quantity = quantity
+            else:
+                cart_item.quantity = cart_item.quantity + 1
             cart_item.save()
             return JsonResponse({"message": f'Quantity updated for {cart_item.pastry}'})
         else:
@@ -191,3 +194,12 @@ def cart(request):
         else:
             context = {'message': 'Pas de produit dans le panier'}
         return render(request, "boulange/cart.html", context)
+
+@login_required
+@csrf_exempt
+@require_http_methods(["POST"])
+def line_delete(request, line_id):
+    # Query for the cart item
+    item = get_object_or_404(Cart, pk=line_id)
+    item.delete()
+    return JsonResponse({"message": "Item deleted"})
