@@ -127,8 +127,7 @@ def bakery(request, bakery_id):
             return JsonResponse({"message": f'{newItem} ', "id": f'{newItem.pastry_id}'})
     # Edit the bakery
     elif request.method == "POST":
-        user = get_object_or_404(User, username=request.user)
-        if user.groups.filter(name="Owner"):
+        if bakery.creator == request.user:
             form = BakeryForm(request.POST or None, instance=bakery)
             if form.is_valid():
                 # Update the bakery

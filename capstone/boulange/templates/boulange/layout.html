@@ -8,37 +8,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     <title>{% block title %}Boulange{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;600;700&family=Shrikhand&display=swap"
+      rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a76bab607b.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
+      integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+    
     <link type="text/css" href="{% static 'boulange/style.css' %}" rel="stylesheet" />
   </head>
   <body>
-    <h1><a href="{% url 'index' %}">Boulange</a></h1>
-    <ul class="navbar-nav mr-auto">
-      {% if user.is_authenticated %}
-      <li>User {{ user.username }}</li>
-      {% for group in user.groups.all %}
-        {% if group|stringformat:"s" == "Owner" %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'bakery_new' %}">Add a bakery</a>
-          </li>
-        {% endif %}
-      {% endfor %}
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'cart' %}">Cart</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
-      </li>
-      {% else %}
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'login' %}">Log In</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'register' %}">Register</a>
-      </li>
-      {% endif %}
-    </ul>
+    <div></div>
+    <!-- Header -->
+    <header>
+      <h1 class="header__title"><a href="{% url 'index' %}">Boulange</a></h1>
 
-    {% block body %} {% endblock %}
-    <script type="module" src="{% static 'boulange/main.js' %}"></script>
+      <ul class="header__list">
+        {% if user.is_authenticated %}
+        <li>User {{ user.username }}</li>
+        {% for group in user.groups.all %}
+          {% if group|stringformat:"s" == "Owner" %}
+            <li class="header__elements">
+              <a class="nav-link" href="{% url 'bakery_new' %}">Add a bakery</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+        <li class="header__elements">
+          <a class="nav-link" href="{% url 'cart' %}">Cart</a>
+        </li>
+        <li class="header__elements">
+          <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+        </li>
+        {% else %}
+        <li class="header__elements">
+          <a class="nav-link" href="{% url 'login' %}">Log In</a>
+        </li>
+        <li class="header__elements">
+          <a class="nav-link" href="{% url 'register' %}">Register</a>
+        </li>
+        {% endif %}
+      </ul>
+
+    </header>
+    <!-- Main -->
+    <main>
+      {% block body %} {% endblock %}
+      <script type="module" src="{% static 'boulange/main.js' %}"></script>
+    </main>
   </body>
 </html>

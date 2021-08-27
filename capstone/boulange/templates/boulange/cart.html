@@ -2,7 +2,8 @@
 {% load static %}
 
 {% block body %}
-    <h2>My cart</h2>
+<section class="container">
+  <h1 class="container__title">My cart</h1>
     {% if message %}
     {{message}}
     {% else %}
@@ -19,4 +20,5 @@
     {% endfor %}
   </ul>
   {% endif %}
+</section>
 {% endblock %}

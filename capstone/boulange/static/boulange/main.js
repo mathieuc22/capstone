@@ -109,7 +109,7 @@ function addToCart_pastry(event) {
   
   // prevent the refresh due to form submission
   event.preventDefault();
-  const id = event.target.id.split('addToCart-')[1]
+  const id = event.target.parentElement.id.split('addToCart-')[1]
   console.log(id)
 
   fetch('/cart', {
@@ -184,6 +184,7 @@ function delete_item(event) {
 
 function like_bakery(event) {
   
+  console.log(event.target)
   // prevent the refresh due to form submission
   event.preventDefault();
   // Récupération du nom de la page pour déclencher les bonnes fonctions
@@ -195,7 +196,7 @@ function like_bakery(event) {
   if (page.includes("bakeries")) {
     id = window.location.pathname.split("/").pop()
   } else {
-    id = event.target.id.split('like-')[1];
+    id = event.target.parentElement.id.split('like-')[1];
   }
 
   // Use the API to send the mail
@@ -209,12 +210,14 @@ function like_bakery(event) {
   .then(response => response.json())
   .then(data => {
     if (data.like) {
-      event.target.innerHTML = "Unlike"
+      event.target.classList.remove('far');
+      event.target.classList.add('fas');
       if (page.includes("bakeries")) {
         document.querySelector("#like").innerHTML++;
       }
     } else {
-      event.target.innerHTML = "Like"
+      event.target.classList.remove('fas');
+      event.target.classList.add('far');
       if (page.includes("bakeries")) {
         document.querySelector("#like").innerHTML--;
       }

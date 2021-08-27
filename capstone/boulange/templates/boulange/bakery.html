@@ -2,42 +2,76 @@
 {% load static %}
 
 {% block body %}
-    <h1>{{ bakery.name }}</h1>
-    {% if request.user == bakery.creator %}
-        <form action="{% url 'bakery_edit' bakery_id=bakery.id %}" method="get">
-            {% csrf_token %}
-            <input type="submit" value="Edit">
-        </form>
+<!-- Menu -->
+<section class="container--carte">
+    <img src="https://images.pexels.com/photos/2987747/pexels-photo-2987747.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260" alt="photo du restaurant">
+    <div class="menu">
+        <div class="menu__restaurant">
+            <h1 class="menu__title">{{ bakery.name }}</h1>
 
-        <form action="{% url 'bakery_delete' bakery_id=bakery.id %}" method="post">
-            {% csrf_token %}
-            <input type="submit" value="Delete">
-        </form>
-    {% endif %}
-    {% if user.is_authenticated %}
-    <button type="button" id="like-bakery">{% if request.user in bakery.likes.all %}Unlike{% else %}Like{% endif %}</button>
-    {% endif %}
-    <p>{{ bakery.city }}</p>
-    <p>{{ bakery.description }}</p>
-    <p>Likes: <span id="like">{{ bakery.number_of_likes }}</span></p>
-    <h2>Items</h2>
-    {% if request.user == bakery.creator %}
-    <form method="PUT" id="pastry-form">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Submit">
-    </form>
-    {% endif %}
-    <ul id=pastry-list>
-        {% for pastry in bakery.pastries.all %}
-        <li>{{ pastry }}
-            {% if request.user == bakery.creator %}
-            <button type="button" class="delete-pastry" id="delete-{{ pastry.pastry_id }}">Delete</button>
-            {% endif %}
+            <!-- Like for user -->
             {% if user.is_authenticated %}
-            <button type="button" class="addToCart-pastry" id="addToCart-{{ pastry.pastry_id }}">Add to cart</button>
+            <div class="menu__like" id="like-bakery">
+                {% if request.user in bakery.likes.all %}
+                <i class="fas fa-heart card__like-btn"></i>
+                {% else %}
+                <i class="far fa-heart card__like-btn"></i> 
+                {% endif %}
+                <span id="like">{{ bakery.number_of_likes }}</span>
+            </div>
             {% endif %}
-        </li>
-        {% endfor %}
-    </ul>
+
+        </div>
+        <div>
+            <p>{{ bakery.city }}</p>
+            <p>{{ bakery.description }}</p>
+        </div>
+        <div>
+            <!-- Edit for owner -->
+            {% if request.user == bakery.creator %}
+            <form action="{% url 'bakery_edit' bakery_id=bakery.id %}" method="get">
+                {% csrf_token %}
+                <input type="submit" value="Edit">
+            </form>
+
+            <form action="{% url 'bakery_delete' bakery_id=bakery.id %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="Delete">
+            </form>
+            {% endif %}
+        </div>
+        <div class="menu__column">
+            <h2>Items</h2>
+            <!-- Add item for owner -->
+            {% if request.user == bakery.creator %}
+            <form method="PUT" id="pastry-form">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" value="Submit">
+            </form>
+            {% endif %}
+            <ul id="pastry-list" class="dishes-list">
+                {% for pastry in bakery.pastries.all %}
+                <li class="dishes-list__item">
+                    <div class="dishes-list__content">
+                        <div class="dishes-list__text">
+                            <h3 class="dishes-list__title">{{ pastry.item }}</h3>
+                            <p>{{ pastry.description }}</p>
+                        </div>
+                        <p class="dishes-list__price">{{ pastry.price }}</p>
+                        {% if request.user == bakery.creator %}
+                        <button type="button" class="delete-pastry" id="delete-{{ pastry.pastry_id }}">Delete</button>
+                        {% endif %}
+                    </div>
+                    {% if user.is_authenticated %}
+                    <div class="dishes-list__button addToCart-pastry" id="addToCart-{{ pastry.pastry_id }}">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</section>
 {% endblock %}
