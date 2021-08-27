@@ -14,7 +14,9 @@
             <input type="submit" value="Delete">
         </form>
     {% endif %}
+    {% if user.is_authenticated %}
     <button type="button" id="like-bakery">{% if request.user in bakery.likes.all %}Unlike{% else %}Like{% endif %}</button>
+    {% endif %}
     <p>{{ bakery.city }}</p>
     <p>{{ bakery.description }}</p>
     <p>Likes: <span id="like">{{ bakery.number_of_likes }}</span></p>
@@ -32,7 +34,9 @@
             {% if request.user == bakery.creator %}
             <button type="button" class="delete-pastry" id="delete-{{ pastry.pastry_id }}">Delete</button>
             {% endif %}
+            {% if user.is_authenticated %}
             <button type="button" class="addToCart-pastry" id="addToCart-{{ pastry.pastry_id }}">Add to cart</button>
+            {% endif %}
         </li>
         {% endfor %}
     </ul>
