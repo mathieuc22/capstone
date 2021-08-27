@@ -26,8 +26,17 @@ document.addEventListener('DOMContentLoaded', function() {
     changeQuantity.forEach(select => { select.addEventListener('change', (event) => updateQuantity(event)) });
     document.querySelectorAll('.delete-item').forEach(form => { form.addEventListener('click', (event) => delete_item(event)) });
   }
+  // Call the like API
+  const likeBakeries = document.querySelectorAll('.like-bakery')
+  if (likeBakeries) {
+    likeBakeries.forEach(select => { select.addEventListener('click', (event) => like_bakery(event)) });
+  }
+  // Call the like API
+  const likeBakery = document.querySelector('#like-bakery')
+  if (likeBakery) {
+    likeBakery.addEventListener('click', (event) => like_bakery(event));
+  }
 });
-
 
 function add_pastry(event) {
   
@@ -171,4 +180,44 @@ function delete_item(event) {
       deleteItem.parentElement.remove();
   });
 
+}
+
+function like_bakery(event) {
+  
+  // prevent the refresh due to form submission
+  event.preventDefault();
+  // Récupération du nom de la page pour déclencher les bonnes fonctions
+  const path = window.location.pathname;
+  const page = path.split("/");
+
+  let id
+  // Sélection des fonctions à exécuter en fonction de la page courante
+  if (page.includes("bakeries")) {
+    id = window.location.pathname.split("/").pop()
+  } else {
+    id = event.target.id.split('like-')[1];
+  }
+
+  // Use the API to send the mail
+  fetch(`/bakeries/like/${id}`, {
+    method: 'PUT',
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.like) {
+      event.target.innerHTML = "Unlike"
+      if (page.includes("bakeries")) {
+        document.querySelector("#like").innerHTML++;
+      }
+    } else {
+      event.target.innerHTML = "Like"
+      if (page.includes("bakeries")) {
+        document.querySelector("#like").innerHTML--;
+      }
+    }
+  });
 }

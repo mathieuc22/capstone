@@ -14,9 +14,10 @@
             <input type="submit" value="Delete">
         </form>
     {% endif %}
+    <button type="button" id="like-bakery">{% if request.user in bakery.likes.all %}Unlike{% else %}Like{% endif %}</button>
     <p>{{ bakery.city }}</p>
     <p>{{ bakery.description }}</p>
-    <p>Likes: {{ bakery.number_of_likes }}</p>
+    <p>Likes: <span id="like">{{ bakery.number_of_likes }}</span></p>
     <h2>Items</h2>
     {% if request.user == bakery.creator %}
     <form method="PUT" id="pastry-form">

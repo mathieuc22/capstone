@@ -4,7 +4,9 @@
 {% block body %}
   <ul>
     {% for bakery in bakeries %}
-    <li><a href="{% url 'bakery' bakery_id=bakery.id %}">{{ bakery }}</a></li>
+    <li><a href="{% url 'bakery' bakery_id=bakery.id %}">{{ bakery }}</a>
+      <button type="button" class="like-bakery" id="like-{{ bakery.id }}">{% if request.user in bakery.likes.all %}Unlike{% else %}Like{% endif %}</button>
+    </li>
     {% endfor %}
   </ul>
 {% endblock %}

@@ -139,6 +139,21 @@ def bakery_edit(request, bakery_id):
     form = BakeryForm(request.POST or None, instance=bakery)
     return render(request, "boulange/bakery_edit.html", {'form': form, 'bakery_id': bakery.id})
 
+@csrf_exempt
+@login_required
+@require_http_methods(["PUT"])
+def bakery_like(request, bakery_id):
+    # Query for the bakery
+    bakery = get_object_or_404(Bakery, pk=bakery_id)
+    print(bakery.likes.all())
+    if request.user in bakery.likes.all():
+        bakery.likes.remove(User.objects.get(username=request.user))
+        return JsonResponse({"message": f'{request.user} removes his like to {bakery}', "like": False})
+    else:
+        bakery.likes.add(User.objects.get(username=request.user))
+        bakery.save()
+        return JsonResponse({"message": f'{request.user} adds a like {bakery}', "like": True})
+
 @login_required
 @require_http_methods(["POST"])
 def bakery_delete(request, bakery_id):
