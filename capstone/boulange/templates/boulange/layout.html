@@ -15,9 +15,13 @@
     <ul class="navbar-nav mr-auto">
       {% if user.is_authenticated %}
       <li>User {{ user.username }}</li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'bakery_new' %}">Add a bakery</a>
-      </li>
+      {% for group in user.groups.all %}
+        {% if group|stringformat:"s" == "Owner" %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'bakery_new' %}">Add a bakery</a>
+          </li>
+        {% endif %}
+      {% endfor %}
       <li class="nav-item">
         <a class="nav-link" href="{% url 'cart' %}">Cart</a>
       </li>

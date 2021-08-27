@@ -10,7 +10,7 @@ from django.db import IntegrityError
 from django.core.exceptions import PermissionDenied
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import Bakery, Pastry, Cart
+from .models import Bakery, Pastry, Cart, Group
 from .forms import BakeryForm, PastryForm
 
 import json
@@ -48,7 +48,7 @@ def register(request):
     if request.method == "POST":
         username = request.POST["username"]
         email = request.POST["email"]
-
+        
         # Ensure password matches confirmation
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
@@ -60,6 +60,13 @@ def register(request):
         # Attempt to create new user
         try:
             user = User.objects.create_user(username, email, password)
+            if 'group' in request.POST:
+                bakeryOwner = Group.objects.filter(name="Owner")
+                print(bakeryOwner)
+                if bakeryOwner:
+                    user.groups.add(bakeryOwner.first())
+                else:
+                    user.groups.create(name="Owner")
             user.save()
         except IntegrityError:
             return render(request, "boulange/register.html", {
@@ -75,23 +82,27 @@ def index(request):
 
     # When user add a bakery handle the new
     if request.method == "POST":
-        # Check wether it's a fetch or a form request
-        if request.headers.get("Content-Type") == 'application/json':
-            body = json.loads(request.body)
-            bakery = Bakery(
-                name = body.get("name"),
-                description = body.get("description"),
-                city = body.get("city"),
-                creator = get_object_or_404(User, username=body.get("creator"))
-            )
-            bakery.save()
-        else:
-            form = BakeryForm(request.POST)
-            if form.is_valid():
-                # Create the bakery
-                bakery = form.save(commit=False)
-                bakery.creator = request.user
+        user = get_object_or_404(User, username=request.user)
+        if user.groups.filter(name="Owner"):
+            # Check wether it's a fetch or a form request
+            if request.headers.get("Content-Type") == 'application/json':
+                body = json.loads(request.body)
+                bakery = Bakery(
+                    name = body.get("name"),
+                    description = body.get("description"),
+                    city = body.get("city"),
+                    creator = get_object_or_404(User, username=body.get("creator"))
+                )
                 bakery.save()
+            else:
+                form = BakeryForm(request.POST)
+                if form.is_valid():
+                    # Create the bakery
+                    bakery = form.save(commit=False)
+                    bakery.creator = request.user
+                    bakery.save()
+        else:
+            raise PermissionDenied
 
     # Query all the bakeries
     bakeries = Bakery.objects.all()
@@ -116,10 +127,14 @@ def bakery(request, bakery_id):
             return JsonResponse({"message": f'{newItem} ', "id": f'{newItem.pastry_id}'})
     # Edit the bakery
     elif request.method == "POST":
-        form = BakeryForm(request.POST or None, instance=bakery)
-        if form.is_valid():
-            # Update the bakery
-            form.save()
+        user = get_object_or_404(User, username=request.user)
+        if user.groups.filter(name="Owner"):
+            form = BakeryForm(request.POST or None, instance=bakery)
+            if form.is_valid():
+                # Update the bakery
+                form.save()
+        else:
+            raise PermissionDenied
     # Query for the bakery
     form = PastryForm()
     context = {'bakery': bakery, 'form': form}
@@ -127,8 +142,12 @@ def bakery(request, bakery_id):
 
 @login_required
 def bakery_new(request):
-    form = BakeryForm()
-    return render(request, "boulange/bakery_new.html", {'form': form})
+    user = get_object_or_404(User, username=request.user)
+    if user.groups.filter(name="Owner"):
+        form = BakeryForm()
+        return render(request, "boulange/bakery_new.html", {'form': form})
+    else:
+        raise PermissionDenied
 
 @login_required
 def bakery_edit(request, bakery_id):
@@ -145,7 +164,6 @@ def bakery_edit(request, bakery_id):
 def bakery_like(request, bakery_id):
     # Query for the bakery
     bakery = get_object_or_404(Bakery, pk=bakery_id)
-    print(bakery.likes.all())
     if request.user in bakery.likes.all():
         bakery.likes.remove(User.objects.get(username=request.user))
         return JsonResponse({"message": f'{request.user} removes his like to {bakery}', "like": False})

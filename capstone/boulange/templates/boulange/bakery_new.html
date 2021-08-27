@@ -2,9 +2,13 @@
 {% load static %}
 
 {% block body %}
+{% if message %}
+{{ message }}
+{% else %}
     <form action="{% url 'index' %}" method="post">
         {% csrf_token %}
         {{ form }}
         <input type="submit" value="Submit">
     </form>
+{% endif %}
 {% endblock %}
