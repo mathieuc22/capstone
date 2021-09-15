@@ -1,0 +1,164 @@
+.container--localisation {
+  text-align: center;
+  .city {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $background-light-color;
+    color: $background-color;
+    height: 50px;
+
+    span {
+      width: 40px;
+      display: inline-block;
+    }
+  }
+
+  .explore {
+    padding: 40px;
+    &__title {
+      font-size: 1.5em;
+      font-weight: 700;
+    }
+    &__content {
+      font-size: 1.1em;
+      font-weight: 100;
+      margin: 20px 0;
+    }
+  }
+}
+
+.container--fonctionnement {
+  background-color: white;
+
+  span {
+    width: 30px;
+    display: inline-block;
+    color: $span-color;
+    font-size: 1.2em;
+  }
+  .fonct-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    grid-auto-rows: 5rem;
+    gap: 0.9em;
+    list-style: none;
+    counter-reset: item;
+    margin-top: 30px;
+    &__item {
+      display: flex;
+      align-items: center;
+      margin-left: 12.5px;
+      counter-increment: item;
+      height: 70px;
+      background-color: $background-clear-color;
+      border-radius: 20px;
+      @include card-shadow(0.2);
+      @include hover-effect;
+      cursor: pointer;
+      &:before {
+        margin-left: -12.5px;
+        width: 25px;
+        height: 25px;
+        line-height: 25px;
+        font-size: 0.8em;
+        margin-right: 20px;
+        content: counter(item);
+        background-color: $primaire-color;
+        border-radius: 100%;
+        color: white;
+        text-align: center;
+        display: inline-block;
+      }
+      &--active {
+        //background:#f5edff;
+        background-color: lighten($primaire-color, 35%);
+        span {
+          color: $primaire-color;
+        }
+      }
+    }
+  }
+}
+
+.card {
+  background-color: white;
+  border-radius: 20px;
+  transition: 0.3s;
+  text-decoration: none;
+  color: black;
+  position: relative;
+  transition: box-shadow 0.3s ease-in-out;
+  @include card-shadow;
+  &:hover {
+    @include card-shadow(0.2);
+  }
+  &__img {
+    width: 100%;
+    height: 10.9em;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 20px 20px 0 0;
+  }
+  &__caption {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    div > * {
+      padding: 2px;
+    }
+  }
+  &__link {
+    color: black;
+    &::after {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+      left: 0px;
+      content: " ";
+    }
+  }
+  &__badge {
+    background-color: $clear_green;
+    color: $dark_green;
+    position: absolute;
+    top: 13px;
+    right: 11px;
+    height: 29px;
+    line-height: 29px;
+    width: 80px;
+    border-radius: 2px;
+    font-size: 0.85em;
+    font-weight: 500;
+    text-align: center;
+    @include card-shadow(0.2);
+  }
+  &__title {
+    font-weight: 700;
+  }
+  &__location {
+    font-weight: 300;
+  }
+  &__like {
+    z-index: 2;
+    color: black;
+    font-size: 1.4em;
+    cursor: pointer;
+    &-btn--active {
+      clip-path: circle(125%);
+      background: linear-gradient(355deg, $primaire-color, $secondaire-color);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 900;
+    }
+    &:hover > .card__like-btn {
+      animation: gradient 1.5s forwards;
+    }
+    &:active > .card__like-btn {
+      transform: scale(0.7);
+    }
+  }
+}

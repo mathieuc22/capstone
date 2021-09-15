@@ -1,0 +1,27 @@
+footer {
+    background-color: $background-color;
+    color: white;
+    padding: 25px;
+    div {
+        font-family: Shrikhand;
+    }
+
+    ul {
+        padding: 0;
+    }
+
+    li {
+        list-style: none;
+        padding: 3px;
+    }
+
+    span {
+        width: 20px;
+        display:inline-block;
+        font-size: 0.8em;
+    }
+
+    a {
+        color: white;
+    }
+}

@@ -1,0 +1,23 @@
+.btn {
+  text-decoration: none;
+  border-radius: 25px;
+  font-size: 1em;
+  display: inline-block;
+	cursor:pointer;
+  text-align: center;
+	padding: 8px 15px;
+  color: white;
+  background: $primaire-color;
+  background: linear-gradient(355deg, $primaire-color, $secondaire-color);
+  border: none;
+  &--red {
+    background: red;
+    font-weight: 700;
+  }
+  &:active {
+    position:relative;
+    top:2px;
+  }
+  @include card-shadow(0.2);
+  @include hover-effect;
+}

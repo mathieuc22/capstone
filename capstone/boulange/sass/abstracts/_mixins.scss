@@ -1,0 +1,17 @@
+@mixin card-shadow($opacity: 0.1) {
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, $opacity);
+}
+
+@mixin hover-effect {
+    transition: box-shadow 0.3s ease-in-out;
+    &:hover {
+      @include card-shadow(0.3);
+      opacity: 90%;
+    }
+}
+
+@mixin wrap-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

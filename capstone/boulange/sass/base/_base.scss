@@ -1,0 +1,23 @@
+
+body {
+    min-height:100vh;
+    max-width: 1200px;
+    font-family: "Roboto", sans-serif;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* main */
+main {
+    flex: auto;
+    background-color: $background-clear-color;
+}
+
+.container {
+    padding: 50px 20px;
+    &__title {
+        font-size: 1.6em;
+        font-weight: 700;
+    }
+}

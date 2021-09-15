@@ -1,0 +1,187 @@
+.container--carte {
+  background-color: $background-clear-color;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 35px;
+  img {
+    z-index: 1;
+    width: 100%;
+    max-height: 260px;
+    object-fit: cover;
+  }
+}
+
+.menu {
+  z-index: 2;
+  width: 100%;
+  background-color: $background-clear-color;
+  flex: auto;
+  margin-top: -30px;
+  padding-top: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 30px;
+  & > * {
+    margin: 10px 0;
+  }
+  &__restaurant {
+    display: flex;
+    justify-content: space-between;
+  }
+  &__title {
+    font-family: Shrikhand;
+    font-size: 1.7em;
+  }
+  &__like {
+    font-size: 1.7em;
+    color: black;
+    &:hover > .card__like-btn {
+      animation: gradient 1.5s forwards;
+    }
+    &:active > .card__like-btn {
+      transform: scale(0.7);
+    }
+  }
+  &__city {
+    font-weight: 300;
+  }
+  &__owner {
+    background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 400px;
+    margin: auto;
+    box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.25);
+    padding: 10px;
+    h2 {
+      font-weight: 700;
+      margin: 6px 0;
+    }
+    & form {
+      margin: 4px 0;
+    }
+  }
+  &__pastry-form {
+    border: 1px solid;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    & > * {
+      margin: 5px 0;
+    }
+  }
+  &__column {
+    position: relative;
+    h2 {
+      font-weight: 300;
+      font-size: 1em;
+      text-transform: uppercase;
+      position: relative;
+      margin: 20px 0;
+      &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -8px;
+        height: 3px;
+        width: 40px;
+        border-bottom: 3px solid $tertiaire-color;
+      }
+    }
+    .dishes-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+      grid-auto-rows: 60px;
+      gap: 0.9em;
+      list-style: none;
+      &__item {
+        display: flex;
+        cursor: default;
+        user-select: none;
+        counter-increment: item;
+        background: white;
+        border-radius: 15px;
+        @include card-shadow(0.2);
+        overflow: hidden;
+        position: relative;
+        &:hover > .dishes-list__button {
+          width: 59px;
+          background-color: $tertiaire-color;
+          color: white;
+          display: flex;
+          cursor: pointer;
+          justify-content: center;
+          align-items: center;
+          font-size: 1.3em;
+          animation: movein 0.5s ease-out;
+          i {
+            animation: rotate 0.5s ease-out;
+          }
+        }
+        &:hover > .dishes-list__content {
+          flex: unset;
+          width: calc(100% - 59px);
+        }
+        &:hover .dishes-list__title {
+          @include wrap-text;
+        }
+      }
+      &__delete-item {
+        text-decoration: none;
+        font-size: 0.9em;
+        padding: 0 10px;
+        cursor:pointer;
+        text-align: center;
+        color: white;
+        background: $primaire-color;
+        background: linear-gradient(355deg, $primaire-color, $secondaire-color);
+        border: none;
+        &:active {
+          transform: scale(110%);
+        }
+        transition: box-shadow 0.3s ease-in-out;
+        &:hover {
+          opacity: 90%;
+        }
+      }
+      &__content {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 10px;
+        width: 100%;
+        transition: all 0.5s ease-out;
+      }
+      &__text {
+        display: flex;
+        flex-direction: column;
+        max-width: 80%;
+        p {
+          font-size: 0.9em;
+          font-weight: 300;
+          @include wrap-text;
+        }
+      }
+      &__title {
+        margin: 0 0 3px 0;
+        width: 100%;
+        font-weight: 500;
+        font-size: 1.1em;
+      }
+      &__price {
+        font-weight: 500;
+        align-self: flex-end;
+      }
+      &__button {
+        border: none;
+        text-decoration: none;
+        padding: 0;
+        font-size: 0;
+        &:active {
+          transform: scale(110%);
+        }
+      }
+    }
+  }
+}

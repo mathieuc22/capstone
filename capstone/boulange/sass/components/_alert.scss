@@ -1,0 +1,14 @@
+.alert {
+  position: fixed;
+  background: $secondaire-color;
+  color: white;
+  top: -30px;
+  left: calc(50% - 200px);
+  width: 400px;
+  text-align: center;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 0 0 10px 10px;
+  animation: hide 3s forwards;
+  z-index: 22;
+}
