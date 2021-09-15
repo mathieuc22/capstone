@@ -57,27 +57,36 @@ function add_pastry(event) {
   })
   .then(response => response.json())
   .then(result => {
-      // Print result
-      console.log(result);
+
       const listItem = document.createElement("li");
-      const deleteItem = document.createElement("button");
-      deleteItem.setAttribute("id",`delete-${result.id}`);
-      deleteItem.setAttribute("class","delete-pastry");
-      deleteItem.setAttribute("type","button");
-      deleteItem.innerHTML = "Delete";
-      listItem.innerHTML = result.message;
+      listItem.setAttribute("class","dishes-list__item");
       document.querySelector("#pastry-list").appendChild(listItem);
+
+      const deleteItem = document.createElement("button");
+      deleteItem.setAttribute("class","dishes-list__delete-item delete-pastry");
+      deleteItem.setAttribute("id",`delete-${result.id}`);
+      deleteItem.innerHTML = `<i class="fas fa-trash"></i>`;
       listItem.appendChild(deleteItem);
+      
+      const contentItem = document.createElement("div");
+      contentItem.setAttribute("class","dishes-list__content");
+      listItem.appendChild(contentItem);
+ 
+      const textItem = document.createElement("div");
+      textItem.setAttribute("class","dishes-list__text");
+      textItem.innerHTML = result.message;
+      contentItem.appendChild(textItem);
+      const priceItem = document.createElement("div");
+      priceItem.setAttribute("class","dishes-list__price");
+      contentItem.appendChild(priceItem);
 
       const addToCartItem = document.createElement("button");
+      addToCartItem.setAttribute("class","dishes-list__button addToCart-pastry");
       addToCartItem.setAttribute("id",`addToCart-${result.id}`);
-      addToCartItem.setAttribute("class","addToCart-pastry");
-      addToCartItem.setAttribute("type","button");
-      addToCartItem.innerHTML = "Add to cart";
+      addToCartItem.innerHTML = `<i class="fas fa-shopping-cart"></i>`;
       listItem.appendChild(addToCartItem);
 
       addToCartItem.addEventListener('click', (event) => addToCart_pastry(event));
-
       deleteItem.addEventListener('click', (event) => delete_pastry(event));
   });
 }
@@ -86,8 +95,9 @@ function delete_pastry(event) {
   
   // prevent the refresh due to form submission
   event.preventDefault();
-  const id = event.target.id.split('delete-')[1]
-  const deleteItem = document.querySelector(`#${event.target.id}`)
+  console.log('log' + event.currentTarget)
+  const id = event.currentTarget.id.split('delete-')[1]
+  const deleteItem = document.querySelector(`#${event.currentTarget.id}`)
 
   fetch(`/pastries/delete/${id}`, {
     method: 'POST',
@@ -98,9 +108,8 @@ function delete_pastry(event) {
   })
   .then(response => response.json())
   .then(result => {
-      // Print result
-      console.log(result);
-      deleteItem.parentElement.remove();
+    // Create a message with the result
+    displayMessage(result.message);
   });
 
 }
@@ -109,8 +118,7 @@ function addToCart_pastry(event) {
   
   // prevent the refresh due to form submission
   event.preventDefault();
-  const id = event.target.parentElement.id.split('addToCart-')[1]
-  console.log(id)
+  const id = event.currentTarget.id.split('addToCart-')[1]
 
   fetch('/cart', {
     method: 'POST',
@@ -124,8 +132,8 @@ function addToCart_pastry(event) {
   })
   .then(response => response.json())
   .then(result => {
-      // Print result
-      console.log(result);
+      // Create a message with the result
+      displayMessage(result.message);
   });
 
 }
@@ -184,7 +192,6 @@ function delete_item(event) {
 
 function like_bakery(event) {
   
-  console.log(event.target)
   // prevent the refresh due to form submission
   event.preventDefault();
   // Récupération du nom de la page pour déclencher les bonnes fonctions
@@ -212,15 +219,25 @@ function like_bakery(event) {
     if (data.like) {
       event.target.classList.remove('far');
       event.target.classList.add('fas');
+      event.target.classList.add('card__like-btn--active');
       if (page.includes("bakeries")) {
         document.querySelector("#like").innerHTML++;
       }
     } else {
       event.target.classList.remove('fas');
       event.target.classList.add('far');
+      event.target.classList.remove('card__like-btn--active');
       if (page.includes("bakeries")) {
         document.querySelector("#like").innerHTML--;
       }
     }
   });
+}
+
+function displayMessage(message) {
+  const messageDiv = document.createElement('div')
+  messageDiv.setAttribute("class","alert");
+  messageDiv.innerHTML = message;
+  document.querySelector('main').appendChild(messageDiv);
+  setTimeout(() => { document.querySelector('main').removeChild(messageDiv); }, 3000);
 }

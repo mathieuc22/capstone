@@ -172,7 +172,7 @@ def bakery_like(request, bakery_id):
         return JsonResponse({"message": f'{request.user} adds a like {bakery}', "like": True})
 
 @login_required
-@require_http_methods(["POST"])
+@require_http_methods(["DELETE"])
 def bakery_delete(request, bakery_id):
     # Query for the bakery
     bakery = get_object_or_404(Bakery, pk=bakery_id)

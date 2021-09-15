@@ -13,7 +13,7 @@
             {% if user.is_authenticated %}
             <div class="menu__like" id="like-bakery">
                 {% if request.user in bakery.likes.all %}
-                <i class="fas fa-heart card__like-btn"></i>
+                <i class="fas fa-heart card__like-btn card__like-btn--active"></i>
                 {% else %}
                 <i class="far fa-heart card__like-btn"></i> 
                 {% endif %}
@@ -22,51 +22,49 @@
             {% endif %}
 
         </div>
-        <div>
-            <p>{{ bakery.city }}</p>
-            <p>{{ bakery.description }}</p>
+        <div class="menu__info">
+            <div class="menu__city">{{ bakery.city }}</div>
+            <div class="menu__description">{{ bakery.description }}</div>
         </div>
-        <div>
+        {% if request.user == bakery.creator %}
+        <div class="menu__owner">
+            <h2>Bakery administration</h2>
             <!-- Edit for owner -->
-            {% if request.user == bakery.creator %}
-            <form action="{% url 'bakery_edit' bakery_id=bakery.id %}" method="get">
-                {% csrf_token %}
-                <input type="submit" value="Edit">
-            </form>
+            <a class="btn" href="{% url 'bakery_edit' bakery_id=bakery.id %}">Edit backery information</a>
 
-            <form action="{% url 'bakery_delete' bakery_id=bakery.id %}" method="post">
+            <form action="{% url 'bakery_delete' bakery_id=bakery.id %}" method="delete">
                 {% csrf_token %}
-                <input type="submit" value="Delete">
+                <label for="edit" hidden>Delete the backery</label>
+                <input class="btn btn--red" id="delete" type="submit" value="Delete backery">
             </form>
-            {% endif %}
-        </div>
-        <div class="menu__column">
-            <h2>Items</h2>
             <!-- Add item for owner -->
             {% if request.user == bakery.creator %}
-            <form method="PUT" id="pastry-form">
+            <form class="menu__pastry-form" method="PUT" id="pastry-form">
+                <legend>Add some item to the list:</legend>
                 {% csrf_token %}
                 {{ form }}
-                <input type="submit" value="Submit">
+                <input class="btn" type="submit" value="Add item">
             </form>
             {% endif %}
+        </div>
+        {% endif %}
+        <div class="menu__column">
+            <h2>Items</h2>
             <ul id="pastry-list" class="dishes-list">
                 {% for pastry in bakery.pastries.all %}
                 <li class="dishes-list__item">
+                    {% if request.user == bakery.creator %}
+                    <button class="dishes-list__delete-item delete-pastry" id="delete-{{ pastry.pastry_id }}">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    {% endif %}
                     <div class="dishes-list__content">
-                        <div class="dishes-list__text">
-                            <h3 class="dishes-list__title">{{ pastry.item }}</h3>
-                            <p>{{ pastry.description }}</p>
-                        </div>
-                        <p class="dishes-list__price">{{ pastry.price }}</p>
-                        {% if request.user == bakery.creator %}
-                        <button type="button" class="delete-pastry" id="delete-{{ pastry.pastry_id }}">Delete</button>
-                        {% endif %}
+                        {{ pastry }}
                     </div>
                     {% if user.is_authenticated %}
-                    <div class="dishes-list__button addToCart-pastry" id="addToCart-{{ pastry.pastry_id }}">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
+                    <button class="dishes-list__button addToCart-pastry" id="addToCart-{{ pastry.pastry_id }}">
+                        <i class="fas fa-shopping-cart"></i>
+                    </button>
                     {% endif %}
                 </li>
                 {% endfor %}

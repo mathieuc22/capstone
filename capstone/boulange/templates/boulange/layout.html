@@ -21,16 +21,15 @@
   <body>
     <div></div>
     <!-- Header -->
-    <header>
+    <header class="header">
       <h1 class="header__title"><a href="{% url 'index' %}">Boulange</a></h1>
 
       <ul class="header__list">
         {% if user.is_authenticated %}
-        <li>User {{ user.username }}</li>
         {% for group in user.groups.all %}
           {% if group|stringformat:"s" == "Owner" %}
             <li class="header__elements">
-              <a class="nav-link" href="{% url 'bakery_new' %}">Add a bakery</a>
+              <a class="nav-link" href="{% url 'bakery_new' %}">New bakery</a>
             </li>
           {% endif %}
         {% endfor %}
