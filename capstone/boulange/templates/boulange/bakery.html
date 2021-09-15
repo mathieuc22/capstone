@@ -4,7 +4,7 @@
 {% block body %}
 <!-- Menu -->
 <section class="container--carte">
-    <img src="https://images.pexels.com/photos/2987747/pexels-photo-2987747.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260" alt="photo du restaurant">
+    <img src="{{ bakery.imageUrl }}" alt="photo du restaurant">
     <div class="menu">
         <div class="menu__restaurant">
             <h1 class="menu__title">{{ bakery.name }}</h1>
@@ -28,7 +28,7 @@
         </div>
         {% if request.user == bakery.creator %}
         <details class="menu__owner">
-            <summary>Bakery administration</summary>
+            <summary>Owners Corner</summary>
             <!-- Edit for owner -->
             <div class="menu__pastry-actions">
                 <a class="btn" href="{% url 'bakery_edit' bakery_id=bakery.id %}">Edit backery</a>
@@ -42,7 +42,7 @@
             <!-- Add item for owner -->
             {% if request.user == bakery.creator %}
             <form class="menu__pastry-form" method="PUT" id="pastry-form">
-                <legend>Add some item to the list:</legend>
+                <legend>Add some new pastry:</legend>
                 {% csrf_token %}
                 {{ form }}
                 <input class="btn" type="submit" value="Add item">
@@ -51,7 +51,7 @@
         </details>
         {% endif %}
         <div class="menu__column">
-            <h2>Items</h2>
+            <h2>mmmmm pastries</h2>
             <ul id="pastry-list" class="dishes-list">
                 {% for pastry in bakery.pastries.all %}
                 <li class="dishes-list__item">

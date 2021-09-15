@@ -136,7 +136,8 @@
     @include card-shadow(0.2);
   }
   &__title {
-    font-weight: 700;
+    font-family: Shrikhand;
+    font-size: 1.4em;
   }
   &__location {
     font-weight: 300;

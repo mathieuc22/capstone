@@ -77,8 +77,8 @@ main {
 }
 
 .container__title {
-  font-size: 1.6em;
-  font-weight: 700;
+  font-family: Shrikhand;
+  font-size: 1.7em;
 }
 
 body {
@@ -702,7 +702,8 @@ footer a {
 }
 
 .card__title {
-  font-weight: 700;
+  font-family: Shrikhand;
+  font-size: 1.4em;
 }
 
 .card__location {
