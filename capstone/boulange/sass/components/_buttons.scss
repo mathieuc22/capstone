@@ -14,10 +14,6 @@
   background: linear-gradient(355deg, red, $secondaire-color);
     font-weight: 700;
   }
-  &:active {
-    position:relative;
-    top:2px;
-  }
-  @include card-shadow(0.2);
+  @include card-shadow;
   @include hover-effect;
 }
