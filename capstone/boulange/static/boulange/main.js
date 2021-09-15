@@ -110,6 +110,7 @@ function delete_pastry(event) {
   .then(result => {
     // Create a message with the result
     displayMessage(result.message);
+    deleteItem.parentElement.remove();
   });
 
 }
