@@ -88,6 +88,9 @@ function add_pastry(event) {
 
       addToCartItem.addEventListener('click', (event) => addToCart_pastry(event));
       deleteItem.addEventListener('click', (event) => delete_pastry(event));
+
+      document.querySelector('#id_item').value = '';
+      document.querySelector('#id_price').value = '';
   });
 }
 
