@@ -480,7 +480,7 @@ footer a {
 }
 
 .btn--red {
-  background: red;
+  background: linear-gradient(355deg, red, #FF79DA);
   font-weight: 700;
 }
 
@@ -823,7 +823,6 @@ footer a {
       -ms-flex-align: center;
           align-items: center;
   max-width: 400px;
-  margin: auto;
   -webkit-box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.25);
           box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.25);
   padding: 10px;
@@ -834,7 +833,14 @@ footer a {
   margin: 6px 0;
 }
 
-.menu__owner form {
+.menu__pastry-actions {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  border: 1px solid;
+  padding: 10px;
   margin: 4px 0;
 }
 

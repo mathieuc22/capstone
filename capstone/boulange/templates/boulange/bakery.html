@@ -27,16 +27,18 @@
             <div class="menu__description">{{ bakery.description }}</div>
         </div>
         {% if request.user == bakery.creator %}
-        <div class="menu__owner">
-            <h2>Bakery administration</h2>
+        <details class="menu__owner">
+            <summary>Bakery administration</summary>
             <!-- Edit for owner -->
-            <a class="btn" href="{% url 'bakery_edit' bakery_id=bakery.id %}">Edit backery information</a>
+            <div class="menu__pastry-actions">
+                <a class="btn" href="{% url 'bakery_edit' bakery_id=bakery.id %}">Edit backery</a>
 
-            <form action="{% url 'bakery_delete' bakery_id=bakery.id %}" method="delete">
-                {% csrf_token %}
-                <label for="edit" hidden>Delete the backery</label>
-                <input class="btn btn--red" id="delete" type="submit" value="Delete backery">
-            </form>
+                <form action="{% url 'bakery_delete' bakery_id=bakery.id %}" method="delete">
+                    {% csrf_token %}
+                    <label for="edit" hidden>Delete the backery</label>
+                    <input class="btn btn--red" id="delete" type="submit" value="Delete backery">
+                </form>
+            </div>
             <!-- Add item for owner -->
             {% if request.user == bakery.creator %}
             <form class="menu__pastry-form" method="PUT" id="pastry-form">
@@ -46,7 +48,7 @@
                 <input class="btn" type="submit" value="Add item">
             </form>
             {% endif %}
-        </div>
+        </details>
         {% endif %}
         <div class="menu__column">
             <h2>Items</h2>
