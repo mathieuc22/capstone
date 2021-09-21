@@ -1006,8 +1006,8 @@ footer a {
 .menu__column .dishes-list {
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: (minmax(20rem, 1fr))[auto-fit];
-      grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  -ms-grid-columns: (minmax(16rem, 1fr))[auto-fit];
+      grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
   grid-auto-rows: 60px;
   gap: 0.9em;
   list-style: none;
@@ -1062,6 +1062,43 @@ footer a {
 }
 
 .menu__column .dishes-list__item:hover .dishes-list__title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.menu__column .dishes-list__item:active > .dishes-list__button {
+  width: 59px;
+  background-color: #99E2D0;
+  color: white;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 1.3em;
+  -webkit-animation: movein 0.5s ease-out;
+          animation: movein 0.5s ease-out;
+}
+
+.menu__column .dishes-list__item:active > .dishes-list__button i {
+  -webkit-animation: rotate 0.5s ease-out;
+          animation: rotate 0.5s ease-out;
+}
+
+.menu__column .dishes-list__item:active > .dishes-list__content {
+  -webkit-box-flex: unset;
+      -ms-flex: unset;
+          flex: unset;
+  width: calc(100% - 59px);
+}
+
+.menu__column .dishes-list__item:active .dishes-list__title {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
