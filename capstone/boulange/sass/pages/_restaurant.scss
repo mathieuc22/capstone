@@ -112,7 +112,6 @@
         display: flex;
         cursor: default;
         user-select: none;
-        counter-increment: item;
         background: white;
         border-radius: 15px;
         @include card-shadow;

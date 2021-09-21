@@ -1,0 +1,53 @@
+.cart {
+  background-color: white;
+  border-radius: 20px;
+  transition: 0.3s;
+  text-decoration: none;
+  color: black;
+  position: relative;
+  transition: box-shadow 0.3s ease-in-out;
+  padding: 20px;
+  @include card-shadow;
+  &__item {
+    background-color: $background-clear-color;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 5px 0;
+    display: flex;
+    justify-content: space-between;
+    min-height: 40px;
+  }
+  &__content {
+    flex: auto;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  &__info {
+    display: flex;
+    justify-content: space-around;
+    > * {
+      margin: 0 3px;
+    }
+  }
+  &__delete-item {
+    text-decoration: none;
+    font-size: 0.9em;
+    padding: 0 10px;
+    cursor:pointer;
+    text-align: center;
+    color: white;
+    background: $primaire-color;
+    background: linear-gradient(355deg, $primaire-color, $secondaire-color);
+    border: none;
+    &:active {
+      transform: scale(110%);
+    }
+    transition: box-shadow 0.3s ease-in-out;
+    &:hover {
+      opacity: 90%;
+    }
+  }
+}

@@ -223,7 +223,7 @@ def cart(request):
         if cart_items:
             context = {'cart_items': cart_items}
         else:
-            context = {'message': 'Pas de produit dans le panier'}
+            context = {'message': 'Nothing in your cart'}
         return render(request, "boulange/cart.html", context)
 
 @login_required

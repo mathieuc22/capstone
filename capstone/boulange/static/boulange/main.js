@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const changeQuantity = document.querySelectorAll('.pastryQuantity')
   if (changeQuantity) {
     changeQuantity.forEach(select => { select.addEventListener('change', (event) => updateQuantity(event)) });
-    document.querySelectorAll('.delete-item').forEach(form => { form.addEventListener('click', (event) => delete_item(event)) });
+    document.querySelectorAll('.cart__delete-item').forEach(form => { form.addEventListener('click', (event) => delete_item(event)) });
   }
   // Call the like API
   const likeBakeries = document.querySelectorAll('.like-bakery')
