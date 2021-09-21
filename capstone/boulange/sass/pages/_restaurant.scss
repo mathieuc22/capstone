@@ -43,8 +43,14 @@
       transform: scale(0.7);
     }
   }
-  &__city {
+  &__info {
     font-weight: 300;
+  }
+  &__description {
+    background: white;
+    padding: 15px;
+    border-radius: 15px;
+    margin: 10px 0;
   }
   &__owner {
     background: white;

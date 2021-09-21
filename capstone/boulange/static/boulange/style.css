@@ -917,8 +917,15 @@ footer a {
           transform: scale(0.7);
 }
 
-.menu__city {
+.menu__info {
   font-weight: 300;
+}
+
+.menu__description {
+  background: white;
+  padding: 15px;
+  border-radius: 15px;
+  margin: 10px 0;
 }
 
 .menu__owner {

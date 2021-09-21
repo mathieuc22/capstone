@@ -8,7 +8,6 @@
     <div class="menu">
         <div class="menu__restaurant">
             <h1 class="menu__title">{{ bakery.name }}</h1>
-
             <!-- Like for user -->
             {% if user.is_authenticated %}
             <div class="menu__like" id="like-bakery">
@@ -17,13 +16,12 @@
                 {% else %}
                 <i class="far fa-heart card__like-btn"></i> 
                 {% endif %}
-                <span id="like">{{ bakery.number_of_likes }}</span>
             </div>
             {% endif %}
 
         </div>
         <div class="menu__info">
-            <div class="menu__city">{{ bakery.city }}</div>
+            <div class="menu__city">Located in {{ bakery.city }} - <span id="like">{{ bakery.number_of_likes }}</span> likes</div>
             <div class="menu__description">{{ bakery.description }}</div>
         </div>
         {% if request.user == bakery.creator %}
@@ -51,7 +49,7 @@
         </details>
         {% endif %}
         <div class="menu__column">
-            <h2>mmmmm pastries</h2>
+            <h2>Pastries</h2>
             <ul id="pastry-list" class="dishes-list">
                 {% for pastry in bakery.pastries.all %}
                 <li class="dishes-list__item">
