@@ -9,7 +9,7 @@
   <div class="grid">
     {% for bakery in bakeries %}
     <figure class="card">
-      <img class="card__img" src="{{ bakery.imageUrl }}" alt="restaurant figure">
+      <img class="card__img" src="{{ bakery.image.url }}" alt="restaurant figure">
       <figcaption class="card__caption">
         <a class="card__link" href="{% url 'bakery' bakery_id=bakery.id %}">
           <h2 class="card__title">{{ bakery }}</h2>

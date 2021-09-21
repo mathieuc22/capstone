@@ -15,7 +15,7 @@ class Bakery(models.Model):
     description = models.TextField(blank=True)
     city = models.CharField(max_length=100, choices=CITIES)
     likes = models.ManyToManyField(User, related_name='likes')
-    imageUrl = models.URLField(blank=True)
+    image = models.ImageField(upload_to='images')
 
     def number_of_likes(self):
         return self.likes.count()

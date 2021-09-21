@@ -6,7 +6,7 @@
 {{ message }}
 {% else %}
 <div class="container container--form">
-    <form class="form" action="{% url 'index' %}" method="post">
+    <form class="form" action="{% url 'index' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <h2 class="form__title">Register a bakery</h2>
 

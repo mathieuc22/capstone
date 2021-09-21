@@ -4,7 +4,7 @@
 {% block body %}
 <!-- Menu -->
 <section class="container--carte">
-    <img src="{{ bakery.imageUrl }}" alt="photo du restaurant">
+    <img src="{{ bakery.image.url }}" alt="photo du restaurant">
     <div class="menu">
         <div class="menu__restaurant">
             <h1 class="menu__title">{{ bakery.name }}</h1>
@@ -33,7 +33,7 @@
             <div class="menu__pastry-actions">
                 <a class="btn" href="{% url 'bakery_edit' bakery_id=bakery.id %}">Edit backery</a>
 
-                <form action="{% url 'bakery_delete' bakery_id=bakery.id %}" method="delete">
+                <form action="{% url 'bakery_delete' bakery_id=bakery.id %}" method="POST">
                     {% csrf_token %}
                     <label for="edit" hidden>Delete the backery</label>
                     <input class="btn btn--red" id="delete" type="submit" value="Delete backery">

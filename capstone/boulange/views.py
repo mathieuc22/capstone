@@ -62,7 +62,6 @@ def register(request):
             user = User.objects.create_user(username, email, password)
             if 'group' in request.POST:
                 bakeryOwner = Group.objects.filter(name="Owner")
-                print(bakeryOwner)
                 if bakeryOwner:
                     user.groups.add(bakeryOwner.first())
                 else:
@@ -95,7 +94,7 @@ def index(request):
                 )
                 bakery.save()
             else:
-                form = BakeryForm(request.POST)
+                form = BakeryForm(request.POST, request.FILES)
                 if form.is_valid():
                     # Create the bakery
                     bakery = form.save(commit=False)
@@ -128,7 +127,7 @@ def bakery(request, bakery_id):
     # Edit the bakery
     elif request.method == "POST":
         if bakery.creator == request.user:
-            form = BakeryForm(request.POST or None, instance=bakery)
+            form = BakeryForm(request.POST, request.FILES, instance=bakery)
             if form.is_valid():
                 # Update the bakery
                 form.save()
@@ -172,7 +171,7 @@ def bakery_like(request, bakery_id):
         return JsonResponse({"message": f'{request.user} adds a like {bakery}', "like": True})
 
 @login_required
-@require_http_methods(["DELETE"])
+@require_http_methods(["POST"])
 def bakery_delete(request, bakery_id):
     # Query for the bakery
     bakery = get_object_or_404(Bakery, pk=bakery_id)

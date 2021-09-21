@@ -6,10 +6,20 @@
 {% if message %}
 {{ message }}
 {% else %}
-    <form action="{% url 'bakery' bakery_id=bakery_id %}" method="post">
+<div class="container container--form">
+    <form class="form" action="{% url 'bakery' bakery_id=bakery_id %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Submit">
+        <h2 class="form__title">Edit bakery</h2>
+        {% for input in form %}
+        <div class="form-group">
+            <label for="{{ input.id_for_label }}">{{ input.label }}:</label>
+            {{ input }}
+        </div>
+        {% endfor %}
+        <div class="form-group form-group--button">
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </div>
     </form>
+</div>
 {% endif %}
 {% endblock %}
