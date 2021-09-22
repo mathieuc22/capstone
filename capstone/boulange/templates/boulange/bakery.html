@@ -4,9 +4,9 @@
 {% block body %}
 <!-- Menu -->
 <section class="container--carte">
-    <img src="{{ bakery.image.url }}" alt="photo du restaurant">
+    <img src="{{ bakery.image.url }}" alt="photo du bakery">
     <div class="menu">
-        <div class="menu__restaurant">
+        <div class="menu__bakery">
             <h1 class="menu__title">{{ bakery.name }}</h1>
             <!-- Like for user -->
             {% if user.is_authenticated %}

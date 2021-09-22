@@ -1,68 +1,3 @@
-body {
-  overflow: auto;
-  animation: hide-scroll 3s backwards;
-  @keyframes hide-scroll {
-    from,
-    to {
-      overflow: hidden;
-    }
-  }
-}
-
-.loader {
-  position: fixed;
-  border: 10px solid $background-light-color; /* Light grey */
-  border-top: 10px solid $primaire-color;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  top: calc(50% - 25px);
-  right: calc(50% - 25px);
-  animation: spin 2s forwards;
-}
-
-.load {
-  animation: fadeInFromNone 3s ease-out;
-}
-
-@keyframes fadeInFromNone {
-  0% {
-    display: none;
-    opacity: 0;
-  }
-  70% {
-    display: block;
-    opacity: 0;
-  }
-  100% {
-    display: block;
-    opacity: 1;
-  }
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-    opacity: 1;
-  }
-  30% {
-    transform: rotate(360deg);
-    opacity: 1;
-  }
-  60% {
-    transform: rotate(720deg);
-    opacity: 1;
-  }
-  99% {
-    transform: rotate(1080deg);
-    opacity: 1;
-  }
-  100% {
-    transform: rotate(1080deg);
-    opacity: 0;
-    display: none;
-  }
-}
 
 @keyframes rotate {
   0% {
@@ -103,17 +38,6 @@ body {
   }
   100% {
     transform: translateX(59px);
-  }
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    top: 50px;
-  }
-  100% {
-    opacity: 1;
-    top: 0px;
   }
 }
 

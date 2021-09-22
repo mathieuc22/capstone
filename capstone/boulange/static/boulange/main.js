@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Récupération du nom de la page pour déclencher les bonnes fonctions
   const path = window.location.pathname;
   const page = path.split("/");
-
+  document.addEventListener("touchstart", function() {},false);
   // Sélection des fonctions à exécuter en fonction de la page courante
   if (page.includes("bakeries")) {
     // Prevent submit on form and call the add API
@@ -202,12 +202,13 @@ function like_bakery(event) {
   const path = window.location.pathname;
   const page = path.split("/");
 
+  const icon = event.currentTarget.querySelector('i')
   let id
   // Sélection des fonctions à exécuter en fonction de la page courante
   if (page.includes("bakeries")) {
     id = window.location.pathname.split("/").pop()
   } else {
-    id = event.target.parentElement.id.split('like-')[1];
+    id = event.currentTarget.id.split('like-')[1];
   }
 
   // Use the API to send the mail
@@ -221,16 +222,16 @@ function like_bakery(event) {
   .then(response => response.json())
   .then(data => {
     if (data.like) {
-      event.target.classList.remove('far');
-      event.target.classList.add('fas');
-      event.target.classList.add('card__like-btn--active');
+      icon.classList.remove('far');
+      icon.classList.add('fas');
+      icon.classList.add('card__like-btn--active');
       if (page.includes("bakeries")) {
         document.querySelector("#like").innerHTML++;
       }
     } else {
-      event.target.classList.remove('fas');
-      event.target.classList.add('far');
-      event.target.classList.remove('card__like-btn--active');
+      icon.classList.remove('fas');
+      icon.classList.add('far');
+      icon.classList.remove('card__like-btn--active');
       if (page.includes("bakeries")) {
         document.querySelector("#like").innerHTML--;
       }
