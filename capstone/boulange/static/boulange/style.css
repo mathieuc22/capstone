@@ -283,6 +283,10 @@ main {
   text-align: center;
 }
 
+.nav-link {
+  position: relative;
+}
+
 footer {
   background-color: #353535;
   color: white;
@@ -373,6 +377,18 @@ footer a {
   -webkit-animation: hide 3s forwards;
           animation: hide 3s forwards;
   z-index: 22;
+}
+
+.cart-quantity {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  background-color: hotpink;
+  font-size: 0.7em;
+  color: white;
 }
 
 .container--form {

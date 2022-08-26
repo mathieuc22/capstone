@@ -1,5 +1,20 @@
 document.addEventListener('DOMContentLoaded', function() {
 
+  // If user is logged in display cart quantity
+  if (document.querySelector('.cart-quantity')) {
+    fetch('/cart', {
+      method: 'GET',
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      }
+    })
+    .then(response => response.json())
+    .then(result => {
+        updateCartQuantity(result.cart_qty);
+    });
+  }
+
   // Récupération du nom de la page pour déclencher les bonnes fonctions
   const path = window.location.pathname;
   const page = path.split("/");
@@ -43,7 +58,7 @@ function add_pastry(event) {
   // prevent the refresh due to form submission
   event.preventDefault();
 
-  // Use the API to send the mail
+  // Use the API
   fetch(window.location.pathname, {
     method: 'PUT',
     headers: {
@@ -138,7 +153,21 @@ function addToCart_pastry(event) {
   .then(result => {
       // Create a message with the result
       displayMessage(result.message);
+      updateCartQuantity(result.cart_qty);
   });
+
+}
+
+/*
+* Update cart quantity in the header
+*/
+function updateCartQuantity(qty) {
+  if (qty) {
+    document.querySelector('.cart-quantity').style.visibility = 'visible';
+    document.querySelector('.cart-quantity').innerHTML = qty
+  } else {
+    document.querySelector('.cart-quantity').style.visibility = 'hidden';
+  }
 
 }
 
@@ -164,6 +193,7 @@ function updateQuantity(event) {
   .then(result => {
       // Print result
       console.log(result);
+      updateCartQuantity(result.cart_qty);
   });
 
   const price = Number(document.querySelector(`#pastryPrice-${id}`).innerHTML.replace(" €",""));
@@ -175,11 +205,11 @@ function delete_item(event) {
   
   // prevent the refresh due to form submission
   event.preventDefault();
-  const id = event.target.id.split('delete-')[1]
-  const deleteItem = document.querySelector(`#${event.target.id}`)
+  const id = event.currentTarget.id.split('delete-')[1]
+  const deleteItem = document.querySelector(`#${event.currentTarget.id}`)
 
   fetch(`/cart/delete/${id}`, {
-    method: 'POST',
+    method: 'DELETE',
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -189,7 +219,13 @@ function delete_item(event) {
   .then(result => {
       // Print result
       console.log(result);
-      deleteItem.parentElement.remove();
+      if(result.cart_qty){
+        deleteItem.parentElement.remove();
+      }
+      else {
+        deleteItem.parentElement.parentElement.remove();
+      }
+      updateCartQuantity(result.cart_qty);
   });
 
 }
@@ -211,7 +247,7 @@ function like_bakery(event) {
     id = event.currentTarget.id.split('like-')[1];
   }
 
-  // Use the API to send the mail
+  // Use the API
   fetch(`/bakeries/like/${id}`, {
     method: 'PUT',
     headers: {

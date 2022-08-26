@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.db import IntegrityError
 from django.core.exceptions import PermissionDenied
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Sum
 
 from .models import Bakery, Pastry, Cart, Group
 from .forms import BakeryForm, PastryForm
@@ -206,7 +207,9 @@ def cart(request):
             else:
                 cart_item.quantity = cart_item.quantity + 1
             cart_item.save()
-            return JsonResponse({"message": f'Quantity updated for {cart_item.pastry}'})
+            # Query cart quantity
+            cart_qty = Cart.objects.filter(user=request.user).aggregate(Sum('quantity'))
+            return JsonResponse({"message": f'Quantity updated for {cart_item.pastry}', "cart_qty": cart_qty['quantity__sum']})
         else:
             pastry = Pastry.objects.get(pk=pastryId)
             user = User.objects.get(username=request.user)
@@ -216,21 +219,29 @@ def cart(request):
                 quantity=1
             )
             newItem.save()
-            return JsonResponse({"message": f'Added {newItem} to cart'})
+            # Query cart quantity
+            cart_qty = Cart.objects.filter(user=request.user).aggregate(Sum('quantity'))
+            return JsonResponse({"message": f'Added {newItem} to cart', "cart_qty": cart_qty['quantity__sum']})
     else:
         # Query all the lines
         cart_items = Cart.objects.filter(user=request.user)
+        # Query cart quantity
+        cart_qty = Cart.objects.filter(user=request.user).aggregate(Sum('quantity'))
         if cart_items:
             context = {'cart_items': cart_items}
         else:
             context = {'message': 'Nothing in your cart'}
+        if request.headers['Content-Type'] == 'application/json':
+            return JsonResponse({"cart_qty": cart_qty['quantity__sum']})
         return render(request, "boulange/cart.html", context)
 
 @login_required
 @csrf_exempt
-@require_http_methods(["POST"])
+@require_http_methods(["DELETE"])
 def line_delete(request, line_id):
     # Query for the cart item
     item = get_object_or_404(Cart, pk=line_id)
     item.delete()
-    return JsonResponse({"message": "Item deleted"})
+    # Query cart quantity
+    cart_qty = Cart.objects.filter(user=request.user).aggregate(Sum('quantity'))
+    return JsonResponse({"message": "Item deleted", "cart_qty": cart_qty['quantity__sum']})
