@@ -262,14 +262,18 @@ function like_bakery(event) {
       icon.classList.add('fas');
       icon.classList.add('card__like-btn--active');
       if (page.includes("bakeries")) {
-        document.querySelector("#like").innerHTML++;
+        document.querySelector("#likes").innerHTML++;
+      } else {
+        document.querySelector(`#likes-${id}`).innerHTML++;
       }
     } else {
       icon.classList.remove('fas');
       icon.classList.add('far');
       icon.classList.remove('card__like-btn--active');
       if (page.includes("bakeries")) {
-        document.querySelector("#like").innerHTML--;
+        document.querySelector("#likes").innerHTML--;
+      } else {
+        document.querySelector(`#likes-${id}`).innerHTML--;
       }
     }
   });

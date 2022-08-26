@@ -21,7 +21,7 @@
 
         </div>
         <div class="menu__info">
-            <div class="menu__city">Located in {{ bakery.city }} - <span id="like">{{ bakery.number_of_likes }}</span> likes</div>
+            <div class="menu__city">Located in {{ bakery.city }} - <span id="likes">{{ bakery.number_of_likes }}</span> likes</div>
             <div class="menu__description">{{ bakery.description }}</div>
         </div>
         {% if request.user == bakery.creator %}
