@@ -1,0 +1,26 @@
+.order {
+
+    &__subtitle {
+        padding-bottom: 10px;
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+    }
+
+    &__text {
+        text-align: center;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    &__id {
+        font-weight: 700;
+        color: $primaire-color;
+    }
+
+    &__message {
+        text-align: center;
+        font-size: 0.9rem;
+        font-style: italic;
+        color: $span-color;
+    }
+}

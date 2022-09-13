@@ -207,6 +207,7 @@ function delete_item(event) {
   event.preventDefault();
   const id = event.currentTarget.id.split('delete-')[1]
   const deleteItem = document.querySelector(`#${event.currentTarget.id}`)
+  const placeOrder = document.querySelector('#order')
 
   fetch(`/cart/delete/${id}`, {
     method: 'DELETE',
@@ -224,6 +225,7 @@ function delete_item(event) {
       }
       else {
         deleteItem.parentElement.parentElement.remove();
+        placeOrder.remove();
       }
       updateCartQuantity(result.cart_qty);
   });

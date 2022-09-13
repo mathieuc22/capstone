@@ -10,6 +10,7 @@ from django.db import IntegrityError
 from django.core.exceptions import PermissionDenied
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Sum
+import uuid
 
 from .models import Bakery, Pastry, Cart, Group
 from .forms import BakeryForm, PastryForm
@@ -247,3 +248,18 @@ def line_delete(request, line_id):
     # Query cart quantity
     cart_qty = Cart.objects.filter(user=request.user).aggregate(Sum('quantity'))
     return JsonResponse({"message": "Item deleted", "cart_qty": cart_qty['quantity__sum']})
+
+@login_required
+@csrf_exempt
+@require_http_methods(["POST"])
+def place_order(request):
+    
+    # Query all the lines
+    cart_items = Cart.objects.filter(user=request.user)
+    if cart_items:
+        cart_items.delete()
+        order_id = uuid.uuid4()
+        context = {'order_id': order_id}
+    else:
+        context = {'message': 'Nothing in your cart'}
+    return render(request, "boulange/order.html", context)

@@ -27,6 +27,11 @@
     </li>
     {% endfor %}
   </ul>
+  <form action="{% url 'place_order' %}" method="POST">
+    {% csrf_token %}
+    <label for="order" hidden>Place order</label>
+    <input class="btn" id="order" type="submit" value="Place order">
+  </form>
   {% endif %}
 </section>
 {% endblock %}

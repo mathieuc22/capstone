@@ -1,0 +1,19 @@
+{% extends "boulange/layout.html" %}
+{% load static %}
+
+{% block body %}
+<section class="container">
+  <h1 class="container__title">Thank you</h1>
+  {% if message %}
+  <div class="alert">{{ message }}</div>
+  {% else %}
+  <div class="order">
+    <p class="order__subtitle">for your purchase</p>
+    <div class="card card--order">
+        <div class="order__text">You order number is <span class="order__id">{{ order_id }}</span></div>
+        <p class="order__message">Please leave a review on instagram</p>
+    </div>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}
