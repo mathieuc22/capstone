@@ -78,6 +78,14 @@ def register(request):
     else:
         return render(request, "boulange/register.html")
 
+@login_required
+@csrf_exempt
+def user(request):
+    
+    user = get_object_or_404(User, username=request.user)
+    context = {'user': user}
+    return render(request, "boulange/user.html", context)
+
 @csrf_exempt
 def index(request):
 

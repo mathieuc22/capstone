@@ -964,4 +964,9 @@ footer a {
   font-size: 0.9rem;
   font-style: italic;
   color: #7e7e7e;
+}
+
+.user {
+  display: flex;
+  flex-direction: column;
 }/*# sourceMappingURL=style.css.map */
