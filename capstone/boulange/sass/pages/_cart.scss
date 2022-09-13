@@ -1,49 +1,92 @@
-.cart {
-  background-color: white;
+.cart-container {
+  display: flex;
   border-radius: 20px;
-  transition: 0.3s;
-  text-decoration: none;
-  color: black;
-  position: relative;
-  transition: box-shadow 0.3s ease-in-out;
-  padding: 20px;
+  overflow: hidden;
   margin-top: 20px;
   margin-bottom: 20px;
   @include card-shadow;
+
+  @media (max-width: 599px) {
+    flex-direction: column;
+  }
+}
+
+.cart {
+  flex: 3;
+  background-color: white;
+  color: black;
+  position: relative;
+  padding: 20px;
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  text-transform: uppercase;
+  color: $span-color;
+  padding-bottom: 5px;
+  border-bottom: 1px solid $span-color;
+  margin-bottom: 15px;
+  @media (max-width: 599px) {
+    display: none;
+  }
+
   &__item {
-    background-color: $background-clear-color;
-    border-radius: 10px;
-    overflow: hidden;
-    margin: 5px 0;
-    display: flex;
-    justify-content: space-between;
-    min-height: 40px;
+    flex: 1;
   }
-  &__content {
-    flex: auto;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    align-items: center;
-  }
+
   &__info {
+    flex: 1;
     display: flex;
-    justify-content: space-around;
-    > * {
-      margin: 0 3px;
+    justify-content: space-between;
+  }
+}
+
+.cart-item {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+  @media (max-width: 599px) {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  &__item {
+    flex: 1;
+    @media (max-width: 599px) {
+      width: 100%;
+      display: flex;
+      gap: 10px;
     }
   }
-  &__delete-item {
+
+  &__info {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__pastry {
+    font-weight: 700;
+  }
+
+  &__bakery {
+    color: #7e7e7e;
+  }
+
+  &__delete {
     text-decoration: none;
     font-size: 0.9em;
-    padding: 0 10px;
-    cursor:pointer;
+    padding: 3px 10px;
+    cursor: pointer;
     text-align: center;
     color: white;
     background: $primaire-color;
     background: linear-gradient(355deg, $primaire-color, $secondaire-color);
     border: none;
+    border-radius: 10px;
+
     &:active {
       transform: scale(110%);
     }
@@ -51,5 +94,36 @@
     &:hover {
       opacity: 90%;
     }
+  }
+
+  &__total {
+    font-weight: 700;
+  }
+}
+
+.order-summary {
+  flex: 1;
+  gap: 10px;
+  background-color: $background-color;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  color: $background-light-color;
+
+  @media (max-width: 599px) {
+    align-items: center;
+  }
+
+  &__title {
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  
+  &__cost {
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
   }
 }

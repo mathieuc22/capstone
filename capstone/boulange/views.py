@@ -210,9 +210,15 @@ def cart(request):
             else:
                 cart_item.quantity = cart_item.quantity + 1
             cart_item.save()
+            # Query all the lines
+            cart_items = Cart.objects.filter(user=request.user)
             # Query cart quantity
             cart_qty = Cart.objects.filter(user=request.user).aggregate(Sum('quantity'))
-            return JsonResponse({"message": f'Quantity updated for {cart_item.pastry}', "cart_qty": cart_qty['quantity__sum']})
+            # Query cart price
+            cart_total_price = 0
+            for item in cart_items :
+                cart_total_price += item.getPrice()
+            return JsonResponse({"message": f'Quantity updated for {cart_item.pastry}', "cart_qty": cart_qty['quantity__sum'], "cart_total_price": cart_total_price})
         else:
             pastry = Pastry.objects.get(pk=pastryId)
             user = User.objects.get(username=request.user)
@@ -230,8 +236,12 @@ def cart(request):
         cart_items = Cart.objects.filter(user=request.user)
         # Query cart quantity
         cart_qty = Cart.objects.filter(user=request.user).aggregate(Sum('quantity'))
+        # Query cart price
+        cart_total_price = 0
+        for item in cart_items :
+            cart_total_price += item.getPrice()
         if cart_items:
-            context = {'cart_items': cart_items}
+            context = {'cart_items': cart_items, 'cart_total_price': cart_total_price}
         else:
             context = {'message': 'Nothing in your cart'}
         if request.headers['Content-Type'] == 'application/json':
@@ -245,9 +255,15 @@ def line_delete(request, line_id):
     # Query for the cart item
     item = get_object_or_404(Cart, pk=line_id)
     item.delete()
+    # Query all the lines
+    cart_items = Cart.objects.filter(user=request.user)
     # Query cart quantity
     cart_qty = Cart.objects.filter(user=request.user).aggregate(Sum('quantity'))
-    return JsonResponse({"message": "Item deleted", "cart_qty": cart_qty['quantity__sum']})
+    # Query cart price
+    cart_total_price = 0
+    for item in cart_items :
+        cart_total_price += item.getPrice()
+    return JsonResponse({"message": "Item deleted", "cart_qty": cart_qty['quantity__sum'], "cart_total_price": cart_total_price})
 
 @login_required
 @csrf_exempt

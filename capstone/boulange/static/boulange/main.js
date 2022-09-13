@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const changeQuantity = document.querySelectorAll('.pastryQuantity')
   if (changeQuantity) {
     changeQuantity.forEach(select => { select.addEventListener('change', (event) => updateQuantity(event)) });
-    document.querySelectorAll('.cart__delete-item').forEach(form => { form.addEventListener('click', (event) => delete_item(event)) });
+    document.querySelectorAll('.cart-item__delete').forEach(form => { form.addEventListener('click', (event) => delete_item(event)) });
   }
   // Call the like API
   const likeBakeries = document.querySelectorAll('.like-bakery')
@@ -194,6 +194,7 @@ function updateQuantity(event) {
       // Print result
       console.log(result);
       updateCartQuantity(result.cart_qty);
+      document.querySelector('.order-summary__price').innerHTML = `${ result.cart_total_price } €`;
   });
 
   const price = Number(document.querySelector(`#pastryPrice-${id}`).innerHTML.replace(" €",""));
@@ -208,6 +209,7 @@ function delete_item(event) {
   const id = event.currentTarget.id.split('delete-')[1]
   const deleteItem = document.querySelector(`#${event.currentTarget.id}`)
   const placeOrder = document.querySelector('#order')
+  const totalPrice = document.querySelector('.cart__price')
 
   fetch(`/cart/delete/${id}`, {
     method: 'DELETE',
@@ -221,13 +223,16 @@ function delete_item(event) {
       // Print result
       console.log(result);
       if(result.cart_qty){
-        deleteItem.parentElement.remove();
+        deleteItem.parentElement.parentElement.parentElement.remove();
       }
       else {
-        deleteItem.parentElement.parentElement.remove();
+
+        const totalPrice = document.querySelector('.cart-container')
         placeOrder.remove();
+        totalPrice.remove();
       }
       updateCartQuantity(result.cart_qty);
+      document.querySelector('.order-summary__price').innerHTML = `${ result.cart_total_price } €`;
   });
 
 }

@@ -3,35 +3,64 @@
 
 {% block body %}
 <section class="container">
-  <h1 class="container__title">My cart</h1>
+  <h1 class="container__title">Shopping cart</h1>
   {% if message %}
   <div class="alert">{{ message }}</div>
   {% else %}
-  <ul class="cart">
-    {% for cart_item in cart_items %}
-    <li class="cart__item">
-      <div class="cart__content">
-        <div class="cart__text">{{ cart_item.pastry.bakery.name }} - {{ cart_item.pastry.item }} (<span id="pastryPrice-{{ cart_item.pastry.pastry_id }}">{{cart_item.pastry.price}} €</span>)</div>
-        <div class="cart__info">
-          <select class="pastryQuantity" id="pastryQuantity-{{ cart_item.pastry.pastry_id }}">
-            {% for i in '0123456789'|make_list %}
-            <option value="{{ forloop.counter }}" {% if cart_item.quantity == forloop.counter %}selected{% endif %}>{{ forloop.counter }}</option>
-            {% endfor %}
-          </select>
-          <div>
-            <strong id="linePrice-{{ cart_item.pastry.pastry_id }}">{{ cart_item.getPrice }} €</strong>
-          </div>
+
+  <div class="cart-container">
+    <div class="cart">
+  
+      <div class="cart-header">
+        <div class="cart-header__item">
+          <div>Item</div>
+        </div>
+        <div class="cart-header__info">
+          <div>Quantity</div>
+          <div>Price</div>
+          <div>Total</div>
         </div>
       </div>
-      <button type="button" class="cart__delete-item" id="delete-{{ cart_item.line_id }}"><i class="fas fa-trash"></i></button>
-    </li>
-    {% endfor %}
-  </ul>
-  <form action="{% url 'place_order' %}" method="POST">
-    {% csrf_token %}
-    <label for="order" hidden>Place order</label>
-    <input class="btn" id="order" type="submit" value="Place order">
-  </form>
+  
+      <ul>
+        {% for cart_item in cart_items %}
+        <li class="cart-item">
+          <div class="cart-item__item">
+            <div class="cart-item__pastry">{{ cart_item.pastry.item }}</div>
+            <div class="cart-item__bakery">{{ cart_item.pastry.bakery.name }}</div>
+          </div>
+          <div class="cart-item__info">
+            <div class="cart-item__quantity">
+              <select class="pastryQuantity" id="pastryQuantity-{{ cart_item.pastry.pastry_id }}">
+                {% for i in '0123456789'|make_list %}
+                <option value="{{ forloop.counter }}" {% if cart_item.quantity == forloop.counter %}selected{% endif %}>{{ forloop.counter }}</option>
+                {% endfor %}
+              </select>
+              <button type="button" class="cart-item__delete" id="delete-{{ cart_item.line_id }}"><i class="fas fa-trash"></i></button>
+            </div>
+            <div class="cart-item__price" id="pastryPrice-{{ cart_item.pastry.pastry_id }}">{{cart_item.pastry.price}} €</div>
+            <div class="cart-item__total" id="linePrice-{{ cart_item.pastry.pastry_id }}">{{ cart_item.getPrice }} €</div>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="order-summary">
+      <h2 class="order-summary__title">Order Summary</h2>
+      <div class="order-summary__cost">
+        <div>Total price</div>
+        <div class="order-summary__price">{{ cart_total_price }} €</div>
+      </div>
+      <form action="{% url 'place_order' %}" method="POST">
+        {% csrf_token %}
+        <label for="order" hidden>Checkout</label>
+        <input class="btn" id="order" type="submit" value="Place order">
+      </form>
+    </div>
+
+  </div>
+
   {% endif %}
 </section>
 {% endblock %}
