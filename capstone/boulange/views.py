@@ -172,15 +172,17 @@ def bakery_like(request, bakery_id):
         return JsonResponse({"message": f'{request.user} adds a like {bakery}', "like": True})
 
 @login_required
-@require_http_methods(["POST"])
 def bakery_delete(request, bakery_id):
     # Query for the bakery
     bakery = get_object_or_404(Bakery, pk=bakery_id)
     if bakery.creator != request.user:
         raise PermissionDenied
     else:
-        bakery.delete()
-        return HttpResponseRedirect(reverse("index"))
+        if request.method == "GET":
+            return render(request, "boulange/bakery_delete.html", {'bakery_id': bakery_id})
+        elif request.method == "POST":
+            bakery.delete()
+            return HttpResponseRedirect(reverse("index"))
 
 @login_required
 @csrf_exempt

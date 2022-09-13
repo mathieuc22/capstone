@@ -31,9 +31,9 @@
             <div class="menu__pastry-actions">
                 <a class="btn" href="{% url 'bakery_edit' bakery_id=bakery.id %}">Edit backery</a>
 
-                <form action="{% url 'bakery_delete' bakery_id=bakery.id %}" method="POST">
+                <form action="{% url 'bakery_delete' bakery_id=bakery.id %}" method="GET">
                     {% csrf_token %}
-                    <label for="edit" hidden>Delete the backery</label>
+                    <label for="delete" hidden>Delete the backery</label>
                     <input class="btn btn--red" id="delete" type="submit" value="Delete backery">
                 </form>
             </div>
