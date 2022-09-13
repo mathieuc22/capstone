@@ -59,7 +59,8 @@
                     </button>
                     {% endif %}
                     <div class="dishes-list__content">
-                        {{ pastry }}
+                        <div>{{ pastry.item }}</div>
+                        <div>{{ pastry.price }} €</div>
                     </div>
                     {% if user.is_authenticated %}
                     <button class="dishes-list__button addToCart-pastry" id="addToCart-{{ pastry.pastry_id }}">

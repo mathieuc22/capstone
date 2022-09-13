@@ -696,6 +696,7 @@ footer a {
 }
 .menu__column .dishes-list__item {
   display: flex;
+  max-width: 500px;
   cursor: default;
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -777,7 +778,9 @@ footer a {
 }
 .menu__column .dishes-list__content {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  gap: 3px;
+  font-size: 1.1rem;
   padding: 12px 10px;
   width: 100%;
   transition: all 0.5s ease-out;

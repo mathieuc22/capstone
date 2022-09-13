@@ -112,6 +112,7 @@
       list-style: none;
       &__item {
         display: flex;
+        max-width: 500px;
         cursor: default;
         user-select: none;
         background: white;
@@ -182,7 +183,9 @@
       }
       &__content {
         display: flex;
-        justify-content: space-between;
+        align-items: center;
+        gap: 3px;
+        font-size: 1.1rem;
         padding: 12px 10px;
         width: 100%;
         transition: all 0.5s ease-out;
