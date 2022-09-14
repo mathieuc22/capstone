@@ -11,8 +11,8 @@
   background: linear-gradient(355deg, $primaire-color, $secondaire-color);
   border: none;
   &--red {
-  background: linear-gradient(355deg, red, $secondaire-color);
-    font-weight: 700;
+    background: unset;
+    color: red;
   }
   @include card-shadow;
   @include hover-effect;

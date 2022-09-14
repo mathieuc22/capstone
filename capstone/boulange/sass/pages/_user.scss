@@ -53,9 +53,34 @@
         font-size: 0.9rem;
         color: $span-color;
     }
+}
 
-    &__likes {
-        margin-top: 20px;
-        font-weight: 700;
+.user-bakeries {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    &__title {
+        text-transform: uppercase;
+        color: $span-color;
+    }
+
+    &__bakeries {
+        a {
+            color: $primaire-color;
+        }
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    &__bakery {
+        display: flex;
+        gap: 20px;
     }
 }

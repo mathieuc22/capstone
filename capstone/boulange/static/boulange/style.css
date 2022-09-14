@@ -191,16 +191,15 @@ main {
 .header {
   z-index: 1;
   display: flex;
+  gap: 20px;
+  justify-content: space-between;
   flex-wrap: wrap;
   align-items: center;
-  padding-top: 22px;
-  padding-bottom: 12px;
+  padding: 20px 30px;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
 }
 .header i {
   font-size: 1.2em;
-  margin-left: 30px;
-  color: #353535;
 }
 .header a {
   color: #9356DC;
@@ -219,15 +218,13 @@ main {
 .header__title {
   font-family: Shrikhand;
   font-size: 1.7em;
-  margin: 0 0 20px 18px;
 }
 .header__list {
   display: flex;
-  flex: auto;
-  justify-content: flex-end;
+  align-items: center;
+  gap: 40px;
 }
 .header__elements {
-  width: 100px;
   text-align: center;
 }
 
@@ -291,8 +288,8 @@ footer a {
   transition: all 0.1s ease-in-out;
 }
 .btn--red {
-  background: linear-gradient(355deg, red, #FF79DA);
-  font-weight: 700;
+  background: unset;
+  color: red;
 }
 .btn:hover {
   box-shadow: 0 6px 4px 0 rgba(0, 0, 0, 0.25);
@@ -321,7 +318,7 @@ footer a {
 
 .cart-quantity {
   position: absolute;
-  top: -5px;
+  top: -10px;
   right: -10px;
   border-radius: 50%;
   width: 14px;
@@ -1016,7 +1013,30 @@ footer a {
   font-size: 0.9rem;
   color: #7e7e7e;
 }
-.user__likes {
-  margin-top: 20px;
-  font-weight: 700;
+
+.user-bakeries {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.user-bakeries__title {
+  text-transform: uppercase;
+  color: #7e7e7e;
+}
+.user-bakeries__bakeries {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.user-bakeries__bakeries a {
+  color: #9356DC;
+}
+.user-bakeries__bakery {
+  display: flex;
+  gap: 20px;
 }/*# sourceMappingURL=style.css.map */

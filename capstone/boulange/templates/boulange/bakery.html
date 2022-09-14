@@ -25,18 +25,8 @@
             <div class="menu__description">{{ bakery.description }}</div>
         </div>
         {% if request.user == bakery.creator %}
-        <details class="menu__owner">
-            <summary>Owners Corner</summary>
-            <!-- Edit for owner -->
-            <div class="menu__pastry-actions">
-                <a class="btn" href="{% url 'bakery_edit' bakery_id=bakery.id %}">Edit backery</a>
-
-                <form action="{% url 'bakery_delete' bakery_id=bakery.id %}" method="GET">
-                    {% csrf_token %}
-                    <label for="delete" hidden>Delete the backery</label>
-                    <input class="btn btn--red" id="delete" type="submit" value="Delete backery">
-                </form>
-            </div>
+        <div class="menu__owner">
+            <div>Owners Corner</div>
             <!-- Add item for owner -->
             {% if request.user == bakery.creator %}
             <form class="menu__pastry-form" method="PUT" id="pastry-form">
@@ -46,7 +36,7 @@
                 <input class="btn" type="submit" value="Add item">
             </form>
             {% endif %}
-        </details>
+        </div>
         {% endif %}
         <div class="menu__column">
             <h2>Pastries</h2>

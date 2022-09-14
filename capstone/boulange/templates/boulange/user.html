@@ -18,15 +18,31 @@
             <div class="user__name">{{ user.username }}</div>
             <div class="user__lastlogin">last login {{ user.last_login }}</div>
             <div>{{ user.email }}</div>
-            {% if user.groups.all.0|stringformat:"s" == "Owner" %}
-            <div>{{ user.groups.all.0 }} of bakeries</div>
+            {% for group in user.groups.all %}
+            {% if group|stringformat:"s" == "Owner" %}
+            <div class="user-bakeries">
+                <div class="user-bakeries__title">Your backeries</div>
+                <ul class="user-bakeries__bakeries">
+                {% for bakery in user.bakeries.all %}
+                    <li class="user-bakeries__bakery">
+                        <a href="{% url 'bakery' bakery_id=bakery.id %}">{{ bakery }}</a>
+                        <a href="{% url 'bakery_edit' bakery_id=bakery.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a href="{% url 'bakery_delete' bakery_id=bakery.id %}"><i class="fa-solid fa-trash"></i></a>
+                    </li>
+                {% endfor %}
+                </ul>
+                <a class="btn" href="{% url 'bakery_new' %}">Register a new bakery</a>
+            </div>
             {% endif %}
-            <div class="user__likes">Bakeries you like:</div>
-            {% for bakery in user.likes.all %}
-                <a class="" href="{% url 'bakery' bakery_id=bakery.id %}">
-                    <div>{{ bakery }}</div>
-                </a>
             {% endfor %}
+            <div class="user-bakeries">
+                <div class="user-bakeries__title">Bakeries you like:</div>
+                <ul class="user-bakeries__bakeries">
+                {% for bakery in user.likes.all %}
+                    <li class="user-bakeries__bakery">
+                        <a class="" href="{% url 'bakery' bakery_id=bakery.id %}">{{ bakery }}</a>
+                    </li>
+                    {% endfor %}
         </div>
     </div>
     {% endif %}
