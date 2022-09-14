@@ -8,19 +8,26 @@
     {% if message %}
     <div class="alert">{{ message }}</div>
     {% else %}
-    <div class="user">
-        <div>{{ user.username }}</div>
-        <div>{{ user.first_name }}</div>
-        <div>{{ user.last_name }}</div>
-        <div>{{ user.email }}</div>
-        <div>Bakeries you like:</div>
-        {% for bakery in user.likes.all %}
-            <div>{{ bakery }}</div>
-        {% endfor %}
-        {% if user.groups.all.0|stringformat:"s" == "Owner" %}
-        <div>{{ user.groups.all.0 }} of bakeries</div>
-        {% endif %}
-        <div>last login {{ user.last_login }}</div>
+    <div class="card user">
+        <div class="user__header">
+            <div class="user__image">
+                <i class="fa-solid fa-user"></i>
+            </div>
+        </div>
+        <div class="user__content">
+            <div class="user__name">{{ user.username }}</div>
+            <div class="user__lastlogin">last login {{ user.last_login }}</div>
+            <div>{{ user.email }}</div>
+            {% if user.groups.all.0|stringformat:"s" == "Owner" %}
+            <div>{{ user.groups.all.0 }} of bakeries</div>
+            {% endif %}
+            <div class="user__likes">Bakeries you like:</div>
+            {% for bakery in user.likes.all %}
+                <a class="" href="{% url 'bakery' bakery_id=bakery.id %}">
+                    <div>{{ bakery }}</div>
+                </a>
+            {% endfor %}
+        </div>
     </div>
     {% endif %}
 </section>

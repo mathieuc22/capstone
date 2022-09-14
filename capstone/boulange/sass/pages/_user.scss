@@ -1,4 +1,61 @@
 .user {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    max-width: 500px;
+    margin: auto;
+    margin-top: 20px;
+
+    &:hover {
+      transform: none;
+      @include card-shadow(4px);
+    }
+
+    &__header {
+        position: relative;
+        background-color: $background-color;
+        height: 100px;
+    }
+
+    &__image {
+        position: absolute;
+        bottom: -50px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: $background-light-color;
+        font-size: 4rem;
+        background: $primaire-color;
+        background: linear-gradient(355deg, $primaire-color, $secondaire-color);
+        border-radius: 99px;
+        width: 100px;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    &__content {
+        padding: 20px;
+        padding-top: 70px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 3px;
+    }
+
+    &__name {
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    &__lastlogin {
+        font-size: 0.9rem;
+        color: $span-color;
+    }
+
+    &__likes {
+        margin-top: 20px;
+        font-weight: 700;
+    }
 }

@@ -969,4 +969,54 @@ footer a {
 .user {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  max-width: 500px;
+  margin: auto;
+  margin-top: 20px;
+}
+.user:hover {
+  transform: none;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+}
+.user__header {
+  position: relative;
+  background-color: #353535;
+  height: 100px;
+}
+.user__image {
+  position: absolute;
+  bottom: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #eaeaea;
+  font-size: 4rem;
+  background: #9356DC;
+  background: linear-gradient(355deg, #9356DC, #FF79DA);
+  border-radius: 99px;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.user__content {
+  padding: 20px;
+  padding-top: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+}
+.user__name {
+  font-size: 2rem;
+  font-weight: 700;
+}
+.user__lastlogin {
+  font-size: 0.9rem;
+  color: #7e7e7e;
+}
+.user__likes {
+  margin-top: 20px;
+  font-weight: 700;
 }/*# sourceMappingURL=style.css.map */
