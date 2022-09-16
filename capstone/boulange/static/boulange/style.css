@@ -826,7 +826,7 @@ footer a {
   background: #f6f6f6;
   border: 1px solid #eaeaea;
   border-radius: 2px;
-  max-width: 100%;
+  width: 100%;
 }
 .pastry-form label {
   min-height: 35px;
@@ -842,10 +842,24 @@ footer a {
 .pastry-form__field {
   display: flex;
 }
+@media (max-width: 599px) {
+  .pastry-form__field {
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+  }
+}
 .pastry-form__group {
   display: flex;
   gap: 30px;
   align-items: center;
+}
+@media (max-width: 599px) {
+  .pastry-form__group {
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+  }
 }
 
 .cart-container {
