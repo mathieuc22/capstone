@@ -17,7 +17,6 @@
         <div class="user__content">
             <div class="user__name">{{ user.username }}</div>
             <div class="user__lastlogin">last login {{ user.last_login }}</div>
-            <div>{{ user.email }}</div>
             {% for group in user.groups.all %}
             {% if group|stringformat:"s" == "Owner" %}
             <div class="user-bakeries">
@@ -34,7 +33,7 @@
             {% endif %}
             {% endfor %}
             <div class="user-bakeries">
-                <div class="user-bakeries__title">Bakeries you like:</div>
+                <div class="user-bakeries__title">Bakeries you like</div>
                 <ul class="user-bakeries__bakeries">
                 {% for bakery in user.likes.all %}
                     <li class="user-bakeries__bakery">

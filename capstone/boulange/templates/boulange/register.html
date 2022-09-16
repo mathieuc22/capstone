@@ -1,6 +1,9 @@
 {% extends "boulange/layout.html" %} {% block body %}
 
 <div class="container container--form">
+  {% if message %}
+      <div class="alert">{{ message }}</div>
+  {% endif %}
   <form class="form" action="{% url 'register' %}" method="post">
     {% csrf_token %}
 
@@ -14,6 +17,7 @@
         id="username"
         name="username"
         placeholder="John D."
+        required
       />
     </div>
     <div class="form-group">
@@ -24,6 +28,7 @@
         id="email"
         name="email"
         placeholder="johnd@youhou.mm"
+        required
       />
     </div>
     <div class="form-group">
@@ -34,6 +39,7 @@
         id="password"
         name="password"
         placeholder="********"
+        required
       />
     </div>
     <div class="form-group">
@@ -44,6 +50,7 @@
         id="confirmation"
         name="confirmation"
         placeholder="********"
+        required
       />
     </div>
     <div class="form-group form-group--checkbox">
@@ -56,9 +63,6 @@
         Already have an account? <a href="{% url 'login' %}">Log In here.</a>
     </div>
   
-    {% if message %}
-        <div class="alert">{{ message }}</div>
-    {% endif %}
   </form>
 </div>
 {% endblock %}

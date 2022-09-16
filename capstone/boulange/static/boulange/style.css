@@ -306,7 +306,7 @@ footer a {
 }
 
 .alert {
-  position: fixed;
+  position: absolute;
   background: #FF79DA;
   color: white;
   top: -30px;
