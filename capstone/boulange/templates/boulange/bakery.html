@@ -7,7 +7,15 @@
     <img src="{{ bakery.image.url }}" alt="photo du bakery">
     <div class="menu">
         <div class="menu__bakery">
-            <h1 class="menu__title">{{ bakery.name }}</h1>
+            <h1 class="menu__title">{{ bakery.name }}
+                {% for group in user.groups.all %}
+                {% if group|stringformat:"s" == "Owner" %}
+                    <a href="{% url 'bakery_edit' bakery_id=bakery.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a href="{% url 'bakery_delete' bakery_id=bakery.id %}"><i class="fa-solid fa-trash"></i></a>
+                {% endif %}
+                {% endfor %}
+            </h1>
+
             <!-- Like for user -->
             {% if user.is_authenticated %}
             <div class="menu__like" id="like-bakery">
@@ -25,17 +33,17 @@
             <div class="menu__description">{{ bakery.description }}</div>
         </div>
         {% if request.user == bakery.creator %}
-        <div class="menu__owner">
-            <div>Owners Corner</div>
+        <div class="menu__column">
+            <h2>Owners Corner</h2>
             <!-- Add item for owner -->
-            {% if request.user == bakery.creator %}
-            <form class="menu__pastry-form" method="PUT" id="pastry-form">
-                <legend>Add some new pastry:</legend>
-                {% csrf_token %}
-                {{ form }}
-                <input class="btn" type="submit" value="Add item">
+            <form class="pastry-form" method="PUT" id="pastry-form">
+                <legend>Add some new pastry</legend>
+                <div class="pastry-form__group">
+                    {% csrf_token %}
+                    {{ form }}
+                    <button class="btn" type="submit"><i class="fa-solid fa-plus"></i></button>
+                </div>
             </form>
-            {% endif %}
         </div>
         {% endif %}
         <div class="menu__column">

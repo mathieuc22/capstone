@@ -26,8 +26,6 @@
                 {% for bakery in user.bakeries.all %}
                     <li class="user-bakeries__bakery">
                         <a href="{% url 'bakery' bakery_id=bakery.id %}">{{ bakery }}</a>
-                        <a href="{% url 'bakery_edit' bakery_id=bakery.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
-                        <a href="{% url 'bakery_delete' bakery_id=bakery.id %}"><i class="fa-solid fa-trash"></i></a>
                     </li>
                 {% endfor %}
                 </ul>

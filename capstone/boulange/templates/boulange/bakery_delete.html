@@ -8,12 +8,12 @@
 {% else %}
 <div class="container modal">
     <h1 class="container__title">Are you sure?</h1>
+    <a class="btn" href="{% url 'bakery' bakery_id=bakery_id %}">No, please go back</a>
     <form action="{% url 'bakery_delete' bakery_id=bakery_id %}" method="POST">
         {% csrf_token %}
         <label for="delete" hidden>Delete the backery</label>
         <input class="btn btn--red" id="delete" type="submit" value="Yes, delete backery">
     </form>
-    <a class="" href="{% url 'bakery' bakery_id=bakery_id %}">No, please go back</a>
 </div>
 {% endif %}
 {% endblock %}

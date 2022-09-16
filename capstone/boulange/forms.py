@@ -8,6 +8,7 @@ class BakeryForm(forms.ModelForm):
         exclude = ('creator','likes',)
 
 class PastryForm(forms.ModelForm):
+    template_name = "form_snippet.html"
     class Meta:
         model = Pastry
         exclude = ('bakery','description',)

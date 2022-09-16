@@ -10,10 +10,15 @@
   background: $primaire-color;
   background: linear-gradient(355deg, $primaire-color, $secondaire-color);
   border: none;
-  &--red {
-    background: unset;
-    color: red;
-  }
   @include card-shadow;
   @include hover-effect;
+  &--red {
+    box-shadow: none;
+    background: unset;
+    color: red;
+    &:hover {
+      transform: none;
+      box-shadow: none;
+    }
+  }
 }

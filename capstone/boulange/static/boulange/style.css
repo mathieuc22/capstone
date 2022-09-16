@@ -287,10 +287,6 @@ footer a {
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
   transition: all 0.1s ease-in-out;
 }
-.btn--red {
-  background: unset;
-  color: red;
-}
 .btn:hover {
   box-shadow: 0 6px 4px 0 rgba(0, 0, 0, 0.25);
   transform: translate3d(0, -2px, 0);
@@ -298,6 +294,15 @@ footer a {
 .btn:active {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
   transform: translate3d(0, 2px, 0);
+}
+.btn--red {
+  box-shadow: none;
+  background: unset;
+  color: red;
+}
+.btn--red:hover {
+  transform: none;
+  box-shadow: none;
 }
 
 .alert {
@@ -610,6 +615,11 @@ footer a {
 .menu__title {
   font-family: Shrikhand;
   font-size: 1.7em;
+  display: flex;
+  gap: 10px;
+}
+.menu__title a {
+  color: #9356DC;
 }
 .menu__like {
   font-size: 1.7em;
@@ -631,39 +641,6 @@ footer a {
   padding: 15px;
   border-radius: 15px;
   margin: 10px 0;
-}
-.menu__owner {
-  background: white;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 400px;
-  box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.25);
-  padding: 10px;
-}
-.menu__owner h2 {
-  font-weight: 700;
-  margin: 6px 0;
-}
-.menu__pastry-actions {
-  display: flex;
-  justify-content: space-around;
-  background: #f6f6f6;
-  border-radius: 5px;
-  padding: 10px;
-  margin: 4px 0;
-}
-.menu__pastry-form {
-  background: #f6f6f6;
-  border-radius: 5px;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-}
-.menu__pastry-form > * {
-  margin: 5px 0;
-  font-size: 1em;
 }
 .menu__column {
   position: relative;
@@ -813,6 +790,33 @@ footer a {
 }
 .menu__column .dishes-list__button:active {
   transform: scale(110%);
+}
+
+.pastry-form {
+  background-color: white;
+  padding: 15px;
+  border-radius: 15px;
+  margin: 10px 0;
+}
+.pastry-form legend {
+  font-size: 0.9em;
+  text-transform: uppercase;
+  color: #7e7e7e;
+  margin-bottom: 5px;
+}
+.pastry-form input, .pastry-form select, .pastry-form textarea {
+  min-height: 35px;
+  font-size: 1em;
+  margin: 1px 0;
+  background: #f6f6f6;
+  border: 1px solid #eaeaea;
+  border-radius: 2px;
+  max-width: 100%;
+}
+.pastry-form__group {
+  display: flex;
+  gap: 30px;
+  align-items: center;
 }
 
 .cart-container {
