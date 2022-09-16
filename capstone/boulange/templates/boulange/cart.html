@@ -27,7 +27,7 @@
         <li class="cart-item">
           <div class="cart-item__item">
             <div class="cart-item__pastry">{{ cart_item.pastry.item }}</div>
-            <div class="cart-item__bakery">{{ cart_item.pastry.bakery.name }}</div>
+            <a class="cart-item__bakery" href="{% url 'bakery' bakery_id=cart_item.pastry.bakery.id %}">{{ cart_item.pastry.bakery.name }}</a>
           </div>
           <div class="cart-item__info">
             <div class="cart-item__quantity">
