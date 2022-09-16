@@ -10,8 +10,8 @@
             <h1 class="menu__title">{{ bakery.name }}
                 {% for group in user.groups.all %}
                 {% if group|stringformat:"s" == "Owner" %}
-                    <a href="{% url 'bakery_edit' bakery_id=bakery.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
-                    <a href="{% url 'bakery_delete' bakery_id=bakery.id %}"><i class="fa-solid fa-trash"></i></a>
+                    <a href="{% url 'bakery_edit' bakery_id=bakery.id %}"><span class="sr-only">Edit</span><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a href="{% url 'bakery_delete' bakery_id=bakery.id %}"><span class="sr-only">Delete</span><i class="fa-solid fa-trash"></i></a>
                 {% endif %}
                 {% endfor %}
             </h1>
@@ -41,7 +41,7 @@
                 <div class="pastry-form__group">
                     {% csrf_token %}
                     {{ form }}
-                    <button class="btn" type="submit"><i class="fa-solid fa-plus"></i></button>
+                    <button class="btn" type="submit"><span class="sr-only">Add item</span><i class="fa-solid fa-plus"></i></button>
                 </div>
             </form>
         </div>
@@ -53,7 +53,7 @@
                 <li class="dishes-list__item">
                     {% if request.user == bakery.creator %}
                     <button class="dishes-list__delete-item delete-pastry" id="delete-{{ pastry.pastry_id }}">
-                        <i class="fas fa-trash"></i>
+                        <span class="sr-only">Delete item</span><i class="fas fa-trash"></i>
                     </button>
                     {% endif %}
                     <div class="dishes-list__content">
@@ -62,7 +62,7 @@
                     </div>
                     {% if user.is_authenticated %}
                     <button class="dishes-list__button addToCart-pastry" id="addToCart-{{ pastry.pastry_id }}">
-                        <i class="fas fa-shopping-cart"></i>
+                        <span class="sr-only">Add to cart</span><i class="fas fa-shopping-cart"></i>
                     </button>
                     {% endif %}
                 </li>

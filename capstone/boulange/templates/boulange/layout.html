@@ -27,10 +27,10 @@
       <ul class="header__list">
         {% if user.is_authenticated %}
         <li class="header__elements">
-          <a class="nav-link" href="{% url 'cart' %}"><i class="fa-solid fa-cart-shopping"></i> <span class="cart-quantity"></span></a>
+          <a class="nav-link" href="{% url 'cart' %}"><span class="sr-only">Shopping cart</span><i class="fa-solid fa-cart-shopping"></i> <span class="cart-quantity"></span></a>
         </li>
         <li class="header__elements">
-          <a class="nav-link" href="{% url 'user' %}"><i class="fa-solid fa-user"></i></a>
+          <a class="nav-link" href="{% url 'user' %}"><span class="sr-only">User account</span><i class="fa-solid fa-user"></i></a>
         </li>
         <li class="header__elements">
           <a class="nav-link" href="{% url 'logout' %}">Log Out</a>

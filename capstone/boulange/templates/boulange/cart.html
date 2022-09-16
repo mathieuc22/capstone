@@ -36,7 +36,7 @@
                 <option value="{{ forloop.counter }}" {% if cart_item.quantity == forloop.counter %}selected{% endif %}>{{ forloop.counter }}</option>
                 {% endfor %}
               </select>
-              <button type="button" class="cart-item__delete" id="delete-{{ cart_item.line_id }}"><i class="fas fa-trash"></i></button>
+              <button type="button" class="cart-item__delete" id="delete-{{ cart_item.line_id }}"><span class="sr-only">Delete item</span><i class="fas fa-trash"></i></button>
             </div>
             <div class="cart-item__price" id="pastryPrice-{{ cart_item.pastry.pastry_id }}">{{cart_item.pastry.price}} €</div>
             <div class="cart-item__total" id="linePrice-{{ cart_item.pastry.pastry_id }}">{{ cart_item.getPrice }} €</div>
