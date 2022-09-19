@@ -18,7 +18,7 @@
 
             <!-- Like for user -->
             {% if user.is_authenticated %}
-            <div class="menu__like" id="like-bakery">
+            <div class="menu__like like-bakery">
                 {% if request.user in bakery.likes.all %}
                 <i class="fas fa-heart card__like-btn card__like-btn--active"></i>
                 {% else %}
