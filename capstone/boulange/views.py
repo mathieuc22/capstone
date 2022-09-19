@@ -133,7 +133,7 @@ def bakery(request, bakery_id):
             price = data.get("price")
             newItem = bakery.pastries.create(item=item, price=price)
             bakery.save()
-            return JsonResponse({"message": f'{newItem} ', "id": f'{newItem.pastry_id}'})
+            return JsonResponse({"item": f'{item} ', "price": f'{price} ', "id": f'{newItem.pastry_id}'})
     # Edit the bakery
     elif request.method == "POST":
         if bakery.creator == request.user:
