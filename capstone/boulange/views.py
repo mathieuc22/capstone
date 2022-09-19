@@ -115,7 +115,10 @@ def index(request):
 
     # Query all the bakeries
     bakeries = Bakery.objects.all()
-    context = {'bakeries': bakeries}
+    if bakeries:
+        context = {'bakeries': bakeries}
+    else:
+        context = {'message': 'No bakery yet'}
     return render(request, "boulange/index.html", context)
 
 @csrf_exempt

@@ -4,8 +4,12 @@
 {% block body %}
 <!-- Bakeries -->
 <section class="container container--bakerys">
-  <a id="bakerys"></a>
   <h1 class="container__title">Bakeries</h1>
+  {% if message %}
+  <div class="alert">{{ message }}</div>
+  {% endif %}
+
+  {% if bakeries %}
   <div class="grid">
     {% for bakery in bakeries %}
     <figure class="card">
@@ -28,5 +32,9 @@
     </figure>
     {% endfor %}
   </div>
+  {% else %}
+  <p>No bakery yet, if you are a bakery owner, you can register it from your user profile</p>
+  {% endif %}
+  
 </section>
 {% endblock %}
