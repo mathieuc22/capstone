@@ -246,28 +246,37 @@ main {
   position: relative;
 }
 
-footer {
+.footer {
   background-color: #353535;
-  color: white;
-  padding: 25px;
+  color: #eaeaea;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
 }
-footer div {
+.footer__logo {
+  font-size: 1.3em;
   font-family: Shrikhand;
 }
-footer ul {
-  padding: 0;
+.footer__social {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 25px;
 }
-footer li {
-  list-style: none;
-  padding: 3px;
+.footer__social-item {
+  display: flex;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  font-size: 1.3em;
+  transition: all 0.25s ease-in-out;
 }
-footer span {
-  width: 20px;
-  display: inline-block;
-  font-size: 0.8em;
-}
-footer a {
-  color: white;
+.footer__social-item:hover {
+  color: #FF79DA;
 }
 
 .grid {

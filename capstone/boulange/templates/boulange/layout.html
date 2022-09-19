@@ -20,7 +20,6 @@
     <link type="text/css" href="{% static 'boulange/style.css' %}" rel="stylesheet" />
   </head>
   <body>
-    <div></div>
     <!-- Header -->
     <header class="header">
       <h1 class="header__title"><a href="{% url 'index' %}">Boulange</a></h1>
@@ -52,5 +51,23 @@
       {% block body %} {% endblock %}
       <script type="module" src="{% static 'boulange/main.js' %}"></script>
     </main>
+    <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__logo">Boulange</div>
+    <ul class="footer__social">
+      <li class="footer__social-item">
+        <i class="fa-brands fa-square-facebook"></i>
+      </li>
+      <li class="footer__social-item">
+        <i class="fa-brands fa-instagram"></i>
+      </li>
+      <li class="footer__social-item">
+        <i class="fa-brands fa-square-twitter"></i>
+      </li>
+      <li class="footer__social-item">
+        <i class="fa-brands fa-square-pinterest"></i>
+      </li>
+    </ul>
+  </footer>
   </body>
 </html>
