@@ -78,48 +78,7 @@ function addPastry(event) {
   })
     .then((response) => response.json())
     .then((result) => {
-      const listItem = document.createElement("li");
-      listItem.setAttribute("class", "dishes-list__item");
-      document.querySelector("#pastry-list").appendChild(listItem);
-
-      const deleteItem = document.createElement("button");
-      deleteItem.setAttribute(
-        "class",
-        "dishes-list__delete-item delete-pastry"
-      );
-      deleteItem.setAttribute("id", `delete-${result.id}`);
-      deleteItem.innerHTML = `<i class="fas fa-trash"></i>`;
-      listItem.appendChild(deleteItem);
-
-      const contentItem = document.createElement("div");
-      contentItem.setAttribute("class", "dishes-list__content");
-      listItem.appendChild(contentItem);
-
-      const textItem = document.createElement("div");
-      textItem.setAttribute("class", "dishes-list__text");
-      textItem.innerHTML = result.item;
-      contentItem.appendChild(textItem);
-      const priceItem = document.createElement("div");
-      priceItem.setAttribute("class", "dishes-list__price");
-      priceItem.innerHTML = result.price + " €";
-      contentItem.appendChild(priceItem);
-
-      const addToCartItem = document.createElement("button");
-      addToCartItem.setAttribute(
-        "class",
-        "dishes-list__button addToCart-pastry"
-      );
-      addToCartItem.setAttribute("id", `addToCart-${result.id}`);
-      addToCartItem.innerHTML = `<i class="fas fa-shopping-cart"></i>`;
-      listItem.appendChild(addToCartItem);
-
-      addToCartItem.addEventListener("click", (event) =>
-        addToCartPastry(event)
-      );
-      deleteItem.addEventListener("click", (event) => deletePastry(event));
-
-      document.querySelector("#id_item").value = "";
-      document.querySelector("#id_price").value = "";
+      pastryFactory(result);
     });
 }
 
@@ -172,20 +131,9 @@ function addToCartPastry(event) {
     .then((result) => {
       // Create a message with the result
       displayMessage(result.message);
+      // Update cart quantity
       updateCartQuantity(result.cart_qty);
     });
-}
-
-/*
- * Update cart quantity in the header.
- */
-function updateCartQuantity(qty) {
-  if (qty) {
-    document.querySelector(".cart-quantity").style.visibility = "visible";
-    document.querySelector(".cart-quantity").innerHTML = qty;
-  } else {
-    document.querySelector(".cart-quantity").style.visibility = "hidden";
-  }
 }
 
 /*
@@ -212,19 +160,13 @@ function updateQuantity(event) {
   })
     .then((response) => response.json())
     .then((result) => {
-      // Print result
+      // Update cart quantity
       updateCartQuantity(result.cart_qty);
-      document.querySelector(
-        ".order-summary__price"
-      ).innerHTML = `${result.cart_total_price} €`;
+      // Update line price
+      updateCartItemPrice(id, value);
+      // Update total price
+      updateCartTotalPrice(result.cart_total_price);
     });
-
-  const price = Number(
-    document.querySelector(`#pastryPrice-${id}`).innerHTML.replace(" €", "")
-  );
-  document.querySelector(`#linePrice-${id}`).innerHTML = `${(
-    value * price
-  ).toFixed(2)} €`;
 }
 
 /*
@@ -233,10 +175,10 @@ function updateQuantity(event) {
 function deleteItem(event) {
   // prevent the refresh due to form submission
   event.preventDefault();
+
   const id = event.currentTarget.id.split("delete-")[1];
   const deleteItem = document.querySelector(`#${event.currentTarget.id}`);
-  const placeOrder = document.querySelector("#order");
-  const totalPrice = document.querySelector(".cart__price");
+  const cart = document.querySelector(".cart-container");
 
   fetch(`/cart/delete/${id}`, {
     method: "DELETE",
@@ -251,14 +193,10 @@ function deleteItem(event) {
       if (result.cart_qty) {
         deleteItem.parentElement.parentElement.parentElement.remove();
       } else {
-        const totalPrice = document.querySelector(".cart-container");
-        placeOrder.remove();
-        totalPrice.remove();
+        cart.remove();
       }
       updateCartQuantity(result.cart_qty);
-      document.querySelector(
-        ".order-summary__price"
-      ).innerHTML = `${result.cart_total_price} €`;
+      updateCartTotalPrice(result.cart_total_price);
     });
 }
 
@@ -295,6 +233,7 @@ function likeBakery(event) {
         icon.classList.remove("far");
         icon.classList.add("fas");
         icon.classList.add("card__like-btn--active");
+        // increment like count
         if (page.includes("bakeries")) {
           document.querySelector("#likes").innerHTML++;
         } else {
@@ -304,6 +243,7 @@ function likeBakery(event) {
         icon.classList.remove("fas");
         icon.classList.add("far");
         icon.classList.remove("card__like-btn--active");
+        // decrement like count
         if (page.includes("bakeries")) {
           document.querySelector("#likes").innerHTML--;
         } else {
@@ -311,6 +251,39 @@ function likeBakery(event) {
         }
       }
     });
+}
+
+/*
+ * Utility HTML function to update cart quantity in the header.
+ */
+function updateCartQuantity(qty) {
+  if (qty) {
+    document.querySelector(".cart-quantity").style.visibility = "visible";
+    document.querySelector(".cart-quantity").innerHTML = qty;
+  } else {
+    document.querySelector(".cart-quantity").style.visibility = "hidden";
+  }
+}
+
+/*
+ * Utility HTML function to update cart total price.
+ */
+function updateCartTotalPrice(total_price) {
+  document.querySelector(".order-summary__price").innerHTML =
+    formatPrice(total_price);
+}
+
+/*
+ * Utility HTML function to update price of an item in the cart.
+ */
+function updateCartItemPrice(itemId, quantity) {
+  // Item price
+  const price = Number(
+    document.querySelector(`#pastryPrice-${itemId}`).innerHTML.replace(" €", "")
+  );
+  document.querySelector(`#linePrice-${itemId}`).innerHTML = formatPrice(
+    price * quantity
+  );
 }
 
 /*
@@ -324,4 +297,59 @@ function displayMessage(message) {
   setTimeout(() => {
     document.querySelector("main").removeChild(messageDiv);
   }, 3000);
+}
+
+/*
+ * Utility HTML function to add pastry card.
+ */
+function pastryFactory(pastry) {
+  // Select the html list
+  const pastriesList = document.querySelector("#pastry-list");
+
+  // Build list element
+  const listItem = document.createElement("li");
+  listItem.setAttribute("class", "dishes-list__item");
+  pastriesList.appendChild(listItem);
+
+  // Build delete element
+  const deleteItem = document.createElement("button");
+  deleteItem.setAttribute("class", "dishes-list__delete-item delete-pastry");
+  deleteItem.setAttribute("id", `delete-${pastry.id}`);
+  deleteItem.innerHTML = `<i class="fas fa-trash"></i>`;
+  listItem.appendChild(deleteItem);
+
+  // Build pastry content
+  const contentItem = document.createElement("div");
+  contentItem.setAttribute("class", "dishes-list__content");
+  listItem.appendChild(contentItem);
+  const textItem = document.createElement("div");
+  textItem.setAttribute("class", "dishes-list__text");
+  textItem.innerHTML = pastry.item;
+  contentItem.appendChild(textItem);
+  const priceItem = document.createElement("div");
+  priceItem.setAttribute("class", "dishes-list__price");
+  priceItem.innerHTML = formatPrice(pastry.price);
+  contentItem.appendChild(priceItem);
+
+  // Build the add to cart button
+  const addToCartItem = document.createElement("button");
+  addToCartItem.setAttribute("class", "dishes-list__button addToCart-pastry");
+  addToCartItem.setAttribute("id", `addToCart-${pastry.id}`);
+  addToCartItem.innerHTML = `<i class="fas fa-shopping-cart"></i>`;
+  listItem.appendChild(addToCartItem);
+
+  // add event listeners on buttons
+  addToCartItem.addEventListener("click", (event) => addToCartPastry(event));
+  deleteItem.addEventListener("click", (event) => deletePastry(event));
+
+  // clear the form
+  document.querySelector("#id_item").value = "";
+  document.querySelector("#id_price").value = "";
+}
+
+/*
+ * Utility function to format price.
+ */
+function formatPrice(price) {
+  return `${Number(price).toFixed(2)} €`;
 }
