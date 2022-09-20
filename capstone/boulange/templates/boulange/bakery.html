@@ -8,12 +8,10 @@
     <div class="menu">
         <div class="menu__bakery">
             <h1 class="menu__title">{{ bakery.name }}
-                {% for group in user.groups.all %}
-                {% if group|stringformat:"s" == "Owner" %}
+                {% if request.user == bakery.creator %}
                     <a href="{% url 'bakery_edit' bakery_id=bakery.id %}"><span class="sr-only">Edit</span><i class="fa-solid fa-pen-to-square"></i></a>
                     <a href="{% url 'bakery_delete' bakery_id=bakery.id %}"><span class="sr-only">Delete</span><i class="fa-solid fa-trash"></i></a>
                 {% endif %}
-                {% endfor %}
             </h1>
 
             <!-- Like for user -->
